@@ -1,23 +1,35 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import SpecialPage from '../pages/SpecialPage.vue'
+import RegularPage from '../pages/RegularPage.vue'
+import RegularPageIndex from '../pages/RegularPageIndex.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/spec/:index',
+    name: 'SpecialPage',
+    component: SpecialPage
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/reg/:index/:id',
+    name: 'RegularPage',
+    component: RegularPage
+  },
+  {
+    path: '/reg/:index',
+    name: 'RegularPageIndex',
+    component: RegularPageIndex
+  },
+  // {
+  //   path: '/about',
+  //   name: 'About',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  // }
 ]
 
 const router = new VueRouter({

@@ -1,12 +1,25 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link v-for="(page, index) in RegularPages" :key="index" :to="`/reg/${index}`">{{ ` ${page.name} |` }}</router-link>
+      <router-link v-for="(page, index) in SpecialPages" :key="index" :to="`/spec/${index}`">{{ ` ${page.name} |` }}</router-link>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+import { RegularPages, SpecialPages } from '@/pages/index.js'
+
+export default {
+  data() {
+    return {
+      RegularPages,
+      SpecialPages
+    };
+  }
+};
+</script>
 
 <style lang="scss">
 #app {
