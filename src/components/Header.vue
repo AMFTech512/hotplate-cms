@@ -14,9 +14,17 @@
 <script>
 export default {
     name: 'HeaderComponent',
-    data: () => ({
-        content: 'I\'m a header!'
-    })
+    props: {
+        contentProp: {
+            type: String,
+            default: 'I\'m a header!'
+        }
+    },
+    data() {
+        return {
+            content: this.contentProp
+        };
+    }
 }
 </script>
 
