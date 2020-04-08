@@ -1,10 +1,9 @@
 <template>
-  <div class="sp-page">
-      Hello, I am a Special Page.
+  <div class="sp-page">    
       <component 
-        v-for="component in SpecialPages[0].components" 
+        v-for="component in Page.components" 
         :key="component.index"
-        :is="component.name" />
+        :is="component" />
   </div>
 </template>
 
@@ -12,12 +11,19 @@
 import { SpecialPages } from '@/pages/index.js'
 
 export default {
-  components: {
-    ...SpecialPages[0].components
+  data() {
+    return {
+      SpecialPages
+    }
   },
-  data: () => ({
-    SpecialPages
-  })
+  computed: {
+    Page() {
+      return SpecialPages[this.$route.params.index]
+    }
+  },
+  updated() {
+    this.$store.commit('setPageTitle', this.Page.name);
+  }
 }
 </script>
 

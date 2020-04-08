@@ -3,8 +3,15 @@ export const SpecialPages = [
         name: 'Home Page',
         dbPath: '/home',
         components: {
-            ArticleTitle: () => import('@/components/Header.vue'),
-            author: () => import('@/components/Header.vue')
+            ArticleTitle: () => import(/* webpackChunkName: "header" */ '@/components/user/Header.vue'),
+            author: () => import(/* webpackChunkName: "header" */ '@/components/user/Header.vue')
+        }
+    },
+    {
+        name: 'Hello world',
+        dbPath: '/home',
+        components: {
+            comp: () => import(/* webpackChunkName: "Helloworld" */ '@/components/user/HelloWorld.vue')
         }
     }
 ];
