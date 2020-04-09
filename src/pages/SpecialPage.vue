@@ -1,9 +1,12 @@
 <template>
   <div class="sp-page">    
       <component 
-        v-for="component in Page.components" 
-        :key="component.index"
-        :is="component" />
+        v-for="(component, name) in Page.components" 
+        :key="name"
+        :is="component.vueComp"
+        :name="name"
+        :props="component.props"
+        @dataChanged="updateData(name, $event)" />
   </div>
 </template>
 
@@ -11,9 +14,11 @@
 import { SpecialPages } from '@/pages/index.js'
 
 export default {
+  name: 'SpecialPage',
   data() {
     return {
-      SpecialPages
+      SpecialPages,
+      PageData: {}
     }
   },
   computed: {
@@ -23,6 +28,11 @@ export default {
   },
   updated() {
     this.$store.commit('setPageTitle', this.Page.name);
+  },
+  methods: {
+    updateData(name, newData) {
+      this.PageData[name] = newData;
+    }
   }
 }
 </script>

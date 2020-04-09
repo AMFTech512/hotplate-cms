@@ -3,22 +3,32 @@ export const SpecialPages = [
         name: 'Home Page',
         dbPath: '/home',
         components: {
-            ArticleTitle: () => import(/* webpackChunkName: "header" */ '@/components/user/Header.vue'),
-            author: () => import(/* webpackChunkName: "header" */ '@/components/user/Header.vue')
+            GreetingText: {
+                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/user/Text.vue'),
+                props: {
+                    headerTxt: 'Greeting Text',
+                    defaultTxt: 'Making Math and Science Easy.'
+                }
+            },
+            SmallerGreetingText: {
+                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/user/Text.vue')
+            } 
         }
     },
     {
         name: 'Hello world',
         dbPath: '/home',
         components: {
-            comp: () => import(/* webpackChunkName: "Helloworld" */ '@/components/user/HelloWorld.vue')
+            comp: {
+                vueComp: () => import(/* webpackChunkName: "Helloworld" */ '@/components/user/HelloWorld.vue')
+            }
         }
     }
 ];
 
 export const RegularPages = [
     {
-        name: 'Blog Article',
+        name: 'Blog Articles',
         dbPath: '/blogs',
         components: [
             {

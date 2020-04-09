@@ -6,7 +6,23 @@
       app
     >
       <v-list dense>
+        <v-subheader>
+          Special Pages
+        </v-subheader>
+        <v-list-item link v-for="(page, index) in SpecialPages" :key="page.name" @click="navigate(`/spec/${index}`, page.name)">
+          <!-- <v-list-item-action>
+            <v-icon>mdi-contact-mail</v-icon>
+          </v-list-item-action> -->
+          <v-list-item-content>
+            <v-list-item-title>{{ page.name }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
+        <v-divider />
+
+        <v-subheader>
+          Regular Pages
+        </v-subheader>
         <v-list-item link v-for="(page, index) in RegularPages" :key="page.name" @click="navigate(`/reg/${index}`, page.name)">
           <!-- <v-list-item-action>
             <v-icon>mdi-home</v-icon>
@@ -16,14 +32,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link v-for="(page, index) in SpecialPages" :key="page.name" @click="navigate(`/spec/${index}`, page.name)">
-          <!-- <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action> -->
-          <v-list-item-content>
-            <v-list-item-title>{{ page.name }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        
       </v-list>
     </v-navigation-drawer>
 
