@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import SpecialPage from '../pages/SpecialPage.vue'
 import RegularPage from '../pages/RegularPage.vue'
 import RegularPageIndex from '../pages/RegularPageIndex.vue'
+import LoginComp from '@/pages/Login.vue'
+
+import auth from '@/firebase/auth'
 
 Vue.use(VueRouter)
 
@@ -22,6 +25,11 @@ const routes = [
     name: 'RegularPageIndex',
     component: RegularPageIndex
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginComp
+  }
   // {
   //   path: '/about',
   //   name: 'About',
@@ -36,6 +44,30 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+
+  const goingToLogin = to.path == '/login'
+
+  var user = auth.currentUser;
+    if(!user)
+      user = await auth.getCurrentUser();
+
+  if(!goingToLogin) {
+
+    if(!(user)) {
+      next('/login');
+    } else {
+      next();
+    }
+
+  } else {
+
+    if(user) next('/');
+    else next();
+  }
+
 })
 
 export default router

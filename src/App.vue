@@ -2,6 +2,7 @@
   <v-app id="app">
 
     <v-navigation-drawer
+      v-if="user"
       v-model="drawer"
       app
     >
@@ -37,12 +38,40 @@
     </v-navigation-drawer>
 
     <v-app-bar app color="indigo darken-2" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="user" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn v-if="$refs.currentPage && user" @click="save" color="blue" class="ma-2">
+        Save
+      </v-btn>
+      <v-menu v-if="user" offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            icon
+            large
+            class="ma-2"
+            v-on="on"
+          >
+            <v-avatar
+              size="32px"
+              item
+            >
+              <v-img
+                :src="user.photoURL"
+                alt="User Avatar"
+              ></v-img></v-avatar>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="logout">
+            <v-list-item-title>Log Out</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-content>
-      <router-view/>
+      <router-view ref="currentPage"/>
     </v-content>
 
   </v-app>
@@ -50,6 +79,7 @@
 
 <script>
 import { RegularPages, SpecialPages } from '@/pages/index.js'
+import auth from '@/firebase/auth.js'
 
 export default {
   data() {
@@ -59,14 +89,26 @@ export default {
       drawer: false
     };
   },
+  created() {
+    this.$store.commit('enableAuthListener');
+  },
   methods: {
     navigate(path, pageTitle) {
       this.$router.push(path);
+    },
+    save() {
+      this.$refs.currentPage.save();
+    },
+    logout() {
+      auth.signOut().then(result => this.$router.push('/login') );
     }
   },
   computed: {
     pageTitle() {
       return this.$store.state.pageTitle;
+    },
+    user() {
+      return this.$store.state.user;
     }
   }
 };

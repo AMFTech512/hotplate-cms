@@ -1,5 +1,5 @@
 <template>
-  <div class="sp-page">    
+  <div class="sp-page">
       <component 
         v-for="(component, name) in Page.components" 
         :key="name"
@@ -32,6 +32,10 @@ export default {
   methods: {
     updateData(name, newData) {
       this.PageData[name] = newData;
+    },
+    save() {
+      console.log(this.PageData);
+      alert(`Saved the data to ${this.Page.dbPath}`);
     }
   }
 }

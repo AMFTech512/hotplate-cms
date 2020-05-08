@@ -1,5 +1,5 @@
 <template>
-    <div class="header-comp">
+    <div class="text-comp">
         <v-card class="card">
         <v-card-title>
             <h2>{{ props.headerTxt }}</h2>
@@ -49,7 +49,7 @@ export default {
 
 <style lang="scss">
 
-.header-comp {
+.text-comp {
     
     margin: 10px;
 
