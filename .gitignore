@@ -22,3 +22,5 @@ yarn-error.log*
 
 #credentials
 firebaseconfig.js
+.firebaserc
+*.SECKEY.json
