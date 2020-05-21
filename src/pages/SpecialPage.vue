@@ -1,12 +1,23 @@
 <template>
   <div class="sp-page">
+    <div v-if="loading" class="loading">    
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="green"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <div v-else>
       <component 
         v-for="(component, name) in Page.components" 
         :key="name"
         :is="component.vueComp"
         :name="name"
         :props="component.props"
+        :data="PageData[name]"
         @dataChanged="updateData(name, $event)" />
+    </div>
   </div>
 </template>
 
@@ -19,13 +30,23 @@ export default {
   data() {
     return {
       SpecialPages,
-      PageData: {}
+      PageData: {},
+      loading: true
     }
   },
   computed: {
     Page() {
       return SpecialPages[this.$route.params.index]
+    },
+    docRef() {
+      let path = ((this.Page.dbPath[0] == '/')? '' : '/') + this.Page.dbPath;
+      let docRef = database.doc(`/hotplate-spec-pages${path}`);
+      return docRef;
     }
+  },
+  async created() {
+    this.PageData = (await this.docRef.get()).data();
+    this.loading = false;
   },
   updated() {
     this.$store.commit('setPageTitle', this.Page.name);
@@ -35,14 +56,19 @@ export default {
       this.PageData[name] = newData;
     },
     save(callback, err = e => { alert(`An error occurred: ${e}`) }) {
-      let path = ((this.Page.dbPath[0] == '/')? '' : '/') + this.Page.dbPath;
-      let docRef = database.doc(`/hotplate-spec-pages${path}`);
-      docRef.set(this.PageData).then(callback).catch(err);
+      this.docRef.set(this.PageData).then(callback).catch(err);
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+
+.sp-page {
+  .loading {
+    text-align: center;
+    padding: 50px;
+  }
+}
 
 </style>

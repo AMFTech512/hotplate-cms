@@ -24,19 +24,20 @@ export default {
                     defaultTxt: ''
                 };
             }
-        }
+        },
+        data: Object
     },
     data() {
         return {
-            content: this.props.defaultTxt
+            content: (this.data)? this.data.content : this.props.defaultTxt
         };
     },
     created() {
-        this.updateData()
+        this.updateData();
     },
     watch: {
         content: function() {
-            this.updateData()
+            this.updateData();
         }
     },
     methods: {
