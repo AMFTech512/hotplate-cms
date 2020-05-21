@@ -1,7 +1,7 @@
 <template>
   <div class="comp-list-comp">
       <div class="comp-div" v-for="(component, index) in retVal.components" :key="indicies[index]">
-          <component :is="props.compType" v-model="retVal.components[index]" />
+          <component :is="props.compType" :props="props.props" v-model="retVal.components[index]" />
           <div class="del-btn-div">
               <v-btn color="error" @click="delComp(index)">Delete</v-btn>
           </div>
@@ -18,7 +18,8 @@ export default {
     name: 'ComponentList',
     props: {
         props: {
-            compType: Object
+            compType: Object,
+            props: Object
         },
         value: {
             type: Object,

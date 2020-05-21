@@ -30,7 +30,10 @@ export const SpecialPages = [
             Testimonials: {
                 vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
                 props: {
-                    compType: () => import(/* webpackChunkName: "Quote" */ '@/components/user/Quote.vue')
+                    compType: () => import(/* webpackChunkName: "Quote" */ '@/components/user/Quote.vue'),
+                    props: {
+                        headerTxt: 'Testimonial'
+                    }
                 }
             }
         }
