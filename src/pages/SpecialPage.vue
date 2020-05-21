@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import database from '@/firebase/firestore.js'
 import { SpecialPages } from '@/pages/index.js'
 
 export default {
@@ -33,9 +34,10 @@ export default {
     updateData(name, newData) {
       this.PageData[name] = newData;
     },
-    save() {
-      console.log(this.PageData);
-      alert(`Saved the data to ${this.Page.dbPath}`);
+    save(callback, err = e => { alert(`An error occurred: ${e}`) }) {
+      let path = ((this.Page.dbPath[0] == '/')? '' : '/') + this.Page.dbPath;
+      let docRef = database.doc(`/hotplate-spec-pages${path}`);
+      docRef.set(this.PageData).then(callback).catch(err);
     }
   }
 }

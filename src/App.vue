@@ -74,6 +74,19 @@
       <router-view ref="currentPage"/>
     </v-content>
 
+    <v-snackbar
+      v-model="hasSaved"
+    >
+      The new content has been saved.
+      <v-btn
+        color="pink"
+        text
+        @click="hasSaved = false"
+      >
+        Dismiss
+      </v-btn>
+    </v-snackbar>
+
   </v-app>
 </template>
 
@@ -86,7 +99,8 @@ export default {
     return {
       RegularPages,
       SpecialPages,
-      drawer: false
+      drawer: false,
+      hasSaved: false
     };
   },
   created() {
@@ -97,7 +111,10 @@ export default {
       this.$router.push(path);
     },
     save() {
-      this.$refs.currentPage.save();
+      let thisRef = this;
+      this.$refs.currentPage.save(() => {
+        thisRef.hasSaved = true;
+      });
     },
     logout() {
       auth.signOut().then(result => this.$router.push('/login') );
