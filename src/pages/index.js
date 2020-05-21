@@ -1,6 +1,6 @@
 export const SpecialPages = [
     {
-        name: 'Home Page',
+        name: 'Home',
         dbPath: '/home',
         components: {
             GreetingText: {
@@ -16,14 +16,29 @@ export const SpecialPages = [
         }
     },
     {
-        name: 'Hello world',
-        dbPath: '/home',
-        components: {
-            comp: {
-                vueComp: () => import(/* webpackChunkName: "Helloworld" */ '@/components/user/HelloWorld.vue')
-            }
-        }
+        name: 'Services',
+        dbPath: '/services',
+        components: {}
+    },
+    {
+        name: 'Testimonials',
+        dbPath: '/testimonials',
+        components: {}
+    },
+    {
+        name: 'About',
+        dbPath: '/about-us',
+        components: {}
     }
+    // {
+    //     name: 'Hello world',
+    //     dbPath: '/home',
+    //     components: {
+    //         comp: {
+    //             vueComp: () => import(/* webpackChunkName: "Helloworld" */ '@/components/user/HelloWorld.vue')
+    //         }
+    //     }
+    // }
 ];
 
 export const RegularPages = [

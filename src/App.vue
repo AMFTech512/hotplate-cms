@@ -69,9 +69,8 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-
     <v-content>
-      <router-view ref="currentPage"/>
+      <router-view ref="currentPage" :key="$route.fullPath"/>
     </v-content>
 
     <v-snackbar
