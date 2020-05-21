@@ -26,7 +26,14 @@ export const SpecialPages = [
     {
         name: 'Testimonials',
         dbPath: '/testimonials',
-        components: {}
+        components: {
+            Testimonials: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "Quote" */ '@/components/user/Quote.vue')
+                }
+            }
+        }
     },
     {
         name: 'About',
