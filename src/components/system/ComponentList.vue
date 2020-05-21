@@ -52,7 +52,8 @@ export default {
             this.updateData();
         },
         delComp(index) {
-            console.log(`deleting ${index}`)
+            if(!confirm("Are you sure you want to delete this item?"))
+                return;
             this.retVal.components.splice(index, 1);
             this.indicies.splice(index, 1);
             this.updateData();
