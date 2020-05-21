@@ -1,5 +1,6 @@
 <template>
   <div class="comp-list-comp">
+      <h2>{{ props.headerTxt }}</h2>
       <div class="comp-div" v-for="(component, index) in retVal.components" :key="indicies[index]">
           <component :is="props.compType" :props="props.props" v-model="retVal.components[index]" />
           <div class="del-btn-div">
@@ -18,8 +19,14 @@ export default {
     name: 'ComponentList',
     props: {
         props: {
-            compType: Object,
-            props: Object
+            type: Object,
+            default: function() {
+                return {
+                    compType: Object,
+                    props: Object,
+                    headerTxt: 'List'
+                }
+            }
         },
         value: {
             type: Object,
@@ -47,7 +54,7 @@ export default {
             this.$emit('input', this.retVal);
         },
         addComp() {
-            this.retVal.components.push({});
+            this.retVal.components.push(undefined);
             this.indicies.push(this.indicies[this.indicies.length - 1] + 1);
             this.updateData();
         },
@@ -65,6 +72,10 @@ export default {
 <style lang="scss">
 
 .comp-list-comp {
+
+    > h2 {
+        margin: 20px;
+    }
 
     .add-btn-div {
         text-align: center;

@@ -7,7 +7,7 @@
       app
     >
       <v-list dense>
-        <v-subheader>
+        <v-subheader v-if="SpecialPages.length > 0">
           Special Pages
         </v-subheader>
         <v-list-item link v-for="(page, index) in SpecialPages" :key="page.name" @click="navigate(`/spec/${index}`, page.name)">
@@ -21,7 +21,7 @@
 
         <v-divider />
 
-        <v-subheader>
+        <v-subheader v-if="RegularPages.length > 0">
           Regular Pages
         </v-subheader>
         <v-list-item link v-for="(page, index) in RegularPages" :key="page.name" @click="navigate(`/reg/${index}`, page.name)">

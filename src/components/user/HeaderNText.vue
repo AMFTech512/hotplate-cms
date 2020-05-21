@@ -1,15 +1,15 @@
 <template>
-  <div class="quote-comp">
+  <div class="header-txt-comp">
     <v-card class="card">
         <v-card-title>
-            <h2>{{ props.headerTxt }}</h2>
+            <h2>{{ retVal.header }}</h2>
         </v-card-title>
         <v-card-text>
-            <v-text-field label="Author" v-model="retVal.author" @input="updateData()"></v-text-field>
+            <v-text-field label="Header" v-model="retVal.header"></v-text-field>
             <v-textarea
                 filled
-                label="Quote"
-                v-model="retVal.quote"
+                label="Text"
+                v-model="retVal.text"
             ></v-textarea>
         </v-card-text>
     </v-card>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    name: 'QuoteComponent',
+    name: 'HeaderNTextComponent',
     data() {
         return {
             retVal: this.value
@@ -30,7 +30,7 @@ export default {
             type: Object,
             default: function() {
                 return {
-                    headerTxt: 'Quote',
+                    headerTxt: 'Header \'N Text',
                     defaultTxt: ''
                 };
             }
@@ -39,26 +39,21 @@ export default {
             type: Object,
             default: function() { 
                 return { 
-                    quote: this.props.defaultTxt,
-                    author: ''
+                    text: this.props.defaultTxt,
+                    header: this.props.headerTxt
                 }
             }
         }
     },
     created() {
-        this.updateData();
-    },
-    methods: {
-        updateData() {
-            this.$emit('input', this.retVal);
-        }
+        this.$emit('input', this.retVal);
     }
 }
 </script>
 
 <style lang="scss">
 
-.quote-comp {
+.header-txt-comp {
     
     margin: 10px;
 

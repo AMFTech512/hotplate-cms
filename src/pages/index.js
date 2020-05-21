@@ -21,7 +21,28 @@ export const SpecialPages = [
     {
         name: 'Services',
         dbPath: '/services',
-        components: {}
+        components: {
+            Methodology: {
+                vueComp: () => import(/* webpackChunkName: "HeaderNText" */ '@/components/user/HeaderNText.vue'),
+                props: {
+                    headerTxt: 'Methodology'
+                }
+            },
+            TeachingStyle: {
+                vueComp: () => import(/* webpackChunkName: "List" */ '@/components/user/List.vue'),
+                props: {
+                    headerTxt: 'Teaching Style',
+                    maxItems: 3
+                }
+            },
+            Subjects: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "SubjectList" */ '@/components/user/SubjectList.vue'),
+                    headerTxt: 'Subjects'
+                }
+            }
+        }
     },
     {
         name: 'Testimonials',
@@ -30,6 +51,7 @@ export const SpecialPages = [
             Testimonials: {
                 vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
                 props: {
+                    headerTxt: 'Testimonials',
                     compType: () => import(/* webpackChunkName: "Quote" */ '@/components/user/Quote.vue'),
                     props: {
                         headerTxt: 'Testimonial'
@@ -39,9 +61,16 @@ export const SpecialPages = [
         }
     },
     {
-        name: 'About',
+        name: 'About Us',
         dbPath: '/about-us',
-        components: {}
+        components: {
+            People: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "HeaderNText" */ '@/components/user/HeaderNText.vue')
+                }
+            }
+        }
     }
     // {
     //     name: 'Hello world',
@@ -55,19 +84,19 @@ export const SpecialPages = [
 ];
 
 export const RegularPages = [
-    {
-        name: 'Blog Articles',
-        dbPath: '/blogs',
-        components: [
-            {
-                name: 'Header',
-                path: '@/components/Header.vue'
-            }
-        ],
-        data: {
-            title: '',
-            body: '',
-            author: ''
-        }
-    }
+    // {
+    //     name: 'Blog Articles',
+    //     dbPath: '/blogs',
+    //     components: [
+    //         {
+    //             name: 'Header',
+    //             path: '@/components/Header.vue'
+    //         }
+    //     ],
+    //     data: {
+    //         title: '',
+    //         body: '',
+    //         author: ''
+    //     }
+    // }
 ];
