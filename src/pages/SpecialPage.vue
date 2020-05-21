@@ -45,7 +45,7 @@ export default {
     }
   },
   async created() {
-    this.PageData = (await this.docRef.get()).data();
+    this.PageData = (await this.docRef.get()).data() || {};
     this.loading = false;
   },
   updated() {
