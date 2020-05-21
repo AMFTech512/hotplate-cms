@@ -5,7 +5,7 @@
             <h2>{{ props.headerTxt }}</h2>
         </v-card-title>
         <v-card-text>
-            <v-text-field label="Text" v-model="content"></v-text-field>
+            <v-text-field label="Text" :value="value.content" @input="updateData($event)"></v-text-field>
         </v-card-text>
         </v-card>
     </div>
@@ -25,24 +25,17 @@ export default {
                 };
             }
         },
-        data: Object
-    },
-    data() {
-        return {
-            content: (this.data)? this.data.content : this.props.defaultTxt
-        };
-    },
-    created() {
-        this.updateData();
-    },
-    watch: {
-        content: function() {
-            this.updateData();
+        value: {
+            type: Object,
+            default: function() { return { content: this.props.defaultTxt } }
         }
     },
+    created() {
+        this.updateData(this.value.content);
+    },
     methods: {
-        updateData() {
-            this.$emit('dataChanged', { content: this.content });
+        updateData(input) {
+            this.$emit('input', { content: input });
         }
     }
 }

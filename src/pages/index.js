@@ -11,7 +11,10 @@ export const SpecialPages = [
                 }
             },
             SmallerGreetingText: {
-                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/user/Text.vue')
+                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/user/Text.vue'),
+                props: {
+                    headerTxt: 'Subheader Message'
+                }
             } 
         }
     },

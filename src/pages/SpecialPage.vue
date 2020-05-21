@@ -15,8 +15,7 @@
         :is="component.vueComp"
         :name="name"
         :props="component.props"
-        :data="PageData[name]"
-        @dataChanged="updateData(name, $event)" />
+        v-model="PageData[name]" />
     </div>
   </div>
 </template>
@@ -52,9 +51,6 @@ export default {
     this.$store.commit('setPageTitle', this.Page.name);
   },
   methods: {
-    updateData(name, newData) {
-      this.PageData[name] = newData;
-    },
     save(callback, err = e => { alert(`An error occurred: ${e}`) }) {
       this.docRef.set(this.PageData).then(callback).catch(err);
     }
