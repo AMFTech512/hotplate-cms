@@ -17,6 +17,9 @@ import auth from '@/firebase/auth.js'
 import firebase from '@/firebase/index.js'
 
 export default {
+    created() {
+        this.$store.commit('setPageTitle', 'Login');
+    },
     methods: {
         signin() {
 

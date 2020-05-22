@@ -4,6 +4,8 @@ import SpecialPage from '../pages/SpecialPage.vue'
 import RegularPage from '../pages/RegularPage.vue'
 import RegularPageIndex from '../pages/RegularPageIndex.vue'
 import LoginComp from '@/pages/Login.vue'
+import UnauthorizedComp from '@/pages/Unauthorized.vue'
+import store from '@/store/index.js'
 
 import auth from '@/firebase/auth'
 
@@ -29,6 +31,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginComp
+  },
+  {
+    path: '/unauthorized',
+    name: 'Unauthorized',
+    component: UnauthorizedComp
   }
   // {
   //   path: '/about',
@@ -48,24 +55,39 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-  const goingToLogin = to.path == '/login'
+  store.commit('setCanSave', false);
+  store.commit('setPageTitle', '');
+
+  const goingToLogin = to.path == '/login';
+  const goingToUnauthorized = to.path == '/unauthorized';
 
   var user = auth.currentUser;
-    if(!user)
-      user = await auth.getCurrentUser();
+  if(!user)
+    user = await auth.getCurrentUser();
 
-  if(!goingToLogin) {
+  store.commit('setUser', user);
 
-    if(!(user)) {
-      next('/login');
-    } else {
-      next();
-    }
+  var isWebmaster = false;
+  if(user)
+    isWebmaster = (await user.getIdTokenResult()).claims.admin;
+  store.commit('setAuthorized', isWebmaster || false);
 
-  } else {
+  if(goingToUnauthorized) {
+    next();
+  } else if(goingToLogin) {
 
     if(user) next('/');
     else next();
+
+  } else {
+
+    if(!user) {
+      next('/login');
+    } else if (!isWebmaster) {
+      next('/unauthorized');
+    } else {
+      next();
+    }
   }
 
 })

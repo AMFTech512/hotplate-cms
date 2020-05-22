@@ -44,6 +44,7 @@ export default {
     }
   },
   async created() {
+    this.$store.commit('setCanSave', true);
     this.PageData = (await this.docRef.get()).data() || {};
     this.loading = false;
   },

@@ -1,15 +1,21 @@
 <template>
   <div class="comp-list-comp">
-      <h2>{{ props.headerTxt }}</h2>
-      <div class="comp-div" v-for="(component, index) in retVal.components" :key="indicies[index]">
-          <component :is="props.compType" :props="props.props" v-model="retVal.components[index]" />
-          <div class="del-btn-div">
-              <v-btn color="error" @click="delComp(index)">Delete</v-btn>
-          </div>
-      </div>
-      <div class="add-btn-div">
-          <v-btn fab color="primary" @click="addComp"><v-icon dark>mdi-plus</v-icon></v-btn>
-      </div>
+      <v-card class="card">
+        <v-card-title>
+            <h2>{{ props.headerTxt }}</h2>
+        </v-card-title>
+        <v-card-text>
+            <div class="comp-div" v-for="(component, index) in retVal.components" :key="indicies[index]">
+                <component :is="props.compType" :props="props.props" v-model="retVal.components[index]" />
+                <div class="del-btn-div">
+                    <v-btn color="error" @click="delComp(index)">Delete</v-btn>
+                </div>
+            </div>
+            <div class="add-btn-div">
+                <v-btn fab color="primary" @click="addComp"><v-icon dark>mdi-plus</v-icon></v-btn>
+            </div>
+        </v-card-text>
+      </v-card>
 
   </div>
 </template>
@@ -72,6 +78,8 @@ export default {
 <style lang="scss">
 
 .comp-list-comp {
+
+    margin: 10px;
 
     > h2 {
         margin: 20px;

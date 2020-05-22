@@ -1,34 +1,17 @@
 <template>
-  <div class="greet-comp">
+  <div class="header-img-txt-comp">
     <v-card class="card">
         <v-card-title>
-            <h2>{{ props.headerTxt }}</h2>
+            <h2>{{ retVal.header }}</h2>
         </v-card-title>
         <v-card-text>
-
-            <h3>Big Text</h3>
-            <v-text-field
-                v-model="retVal.big1"
-                label="Line 1">
-            </v-text-field>
-            <v-text-field
-                v-model="retVal.big2"
-                label="Line 2">
-            </v-text-field>
-            <br />
-
-            <h3>Smaller Text</h3>
-            <v-text-field
-                v-model="retVal.small1"
-                label="Line 1">
-            </v-text-field>
-            <v-text-field
-                v-model="retVal.small2"
-                label="Line 2">
-            </v-text-field>
-            <br />
-
-            <h3>Background Image</h3>
+            <v-text-field label="Header" v-model="retVal.header"></v-text-field>
+            <v-textarea
+                filled
+                label="Text"
+                v-model="retVal.text"
+            ></v-textarea>
+            <h3>Image</h3>
             <img 
                 v-if="imgPath" 
                 :src="imgPath"
@@ -36,7 +19,7 @@
                 style="max-width: 300px; max-height: 200px;">
             <v-file-input
                 :rules="rules"
-                accept="image/png, image/jpeg, image/bmp"
+                accept="image/png, image/jpeg, image/bmp, .svg"
                 prepend-icon="mdi-image"
                 label="Image Upload"
                 v-model="imageFile"
@@ -62,16 +45,16 @@
 import storage from '@/firebase/storage.js'
 
 export default {
-    name: 'GreetingComponent',
+    name: 'HeaderImgTxtComponent',
     data() {
         return {
             retVal: this.value,
+            imgPath: this.value.imgPath,
+            imageFile: null,
+            uploadProgress: 0,
             rules: [
                 value => !value || value.size < 2000000 || 'Image size should be less than 2 MB!',
             ],
-            imageFile: null,
-            imgPath: this.value.imgPath,
-            uploadProgress: 0
         }
     },
     props: {
@@ -80,8 +63,8 @@ export default {
             type: Object,
             default: function() {
                 return {
-                    headerTxt: 'Greeting',
-                    imgPath: '/image.png'
+                    headerTxt: 'Header, Image, Text',
+                    defaultTxt: ''
                 };
             }
         },
@@ -89,25 +72,21 @@ export default {
             type: Object,
             default: function() { 
                 return { 
-                    big1: 'This is',
-                    big2: 'an awesome greeting',
-                    small1: 'You wont ever have to content manage again',
-                    small2: 'because this app does it for you.'
+                    text: this.props.defaultTxt,
+                    header: this.props.headerTxt
                 }
             }
         }
     },
     created() {
-        this.updateData();
+        this.$emit('input', this.retVal);
     },
     methods: {
-        updateData() {
-            this.$emit('input', this.retVal);
-        },
         uploadFile() {
+
             let thisRef = this;
 
-            let imgRef = storage.ref(this.props.imgPath);
+            let imgRef = storage.ref(`${this.props.imgPath}/${this.imageFile.name}`);
             var uploadTask = imgRef.put(this.imageFile);
             uploadTask.on('state_changed', snapshot => {
                 thisRef.uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -136,7 +115,7 @@ export default {
 
 <style lang="scss">
 
-.greet-comp {
+.header-img-txt-comp {
     
     margin: 10px;
 
@@ -147,10 +126,6 @@ export default {
 
     h1 {
         line-height: 2.5rem;
-    }
-
-    .item-list {
-        text-align: center;
     }
 }
 

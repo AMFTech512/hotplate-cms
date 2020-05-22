@@ -2,7 +2,7 @@
   <v-app id="app">
 
     <v-navigation-drawer
-      v-if="user"
+      v-if="showNav"
       v-model="drawer"
       app
     >
@@ -38,10 +38,10 @@
     </v-navigation-drawer>
 
     <v-app-bar app color="indigo darken-2" dark>
-      <v-app-bar-nav-icon v-if="user" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="showNav" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="$refs.currentPage && user" @click="save" color="blue" class="ma-2">
+      <v-btn v-if="showSave" @click="save" color="blue" class="ma-2">
         Save
       </v-btn>
       <v-menu v-if="user" offset-y>
@@ -74,14 +74,12 @@
     </v-content>
 
     <v-snackbar
-      v-model="hasSaved"
-    >
+      v-model="hasSaved">
       The new content has been saved.
       <v-btn
         color="pink"
         text
-        @click="hasSaved = false"
-      >
+        @click="hasSaved = false">
         Dismiss
       </v-btn>
     </v-snackbar>
@@ -125,6 +123,12 @@ export default {
     },
     user() {
       return this.$store.state.user;
+    },
+    showSave() {
+      return this.$store.state.isWebmaster && this.$store.state.canSave;
+    },
+    showNav() {
+      return this.$store.state.isWebmaster;
     }
   }
 };

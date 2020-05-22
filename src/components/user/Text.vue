@@ -5,7 +5,7 @@
             <h2>{{ props.headerTxt }}</h2>
         </v-card-title>
         <v-card-text>
-            <v-text-field label="Text" :value="value.content" @input="updateData($event)"></v-text-field>
+            <v-text-field label="Text" v-model="retVal.content"></v-text-field>
         </v-card-text>
         </v-card>
     </div>
@@ -14,28 +14,36 @@
 <script>
 export default {
     name: 'TextComponent',
+    data() {
+        return {
+            retVal: this.value
+        }
+    },
     props: {
         name: String,
         props: {
             type: Object,
             default: function() {
                 return {
-                    headerTxt: 'Text',
-                    defaultTxt: ''
+                    headerTxt: 'Text'
                 };
             }
         },
         value: {
             type: Object,
-            default: function() { return { content: this.props.defaultTxt } }
+            default: function() { 
+                return { 
+                    content: ''
+                }
+            }
         }
     },
     created() {
-        this.updateData(this.value.content);
+        this.updateData();
     },
     methods: {
-        updateData(input) {
-            this.$emit('input', { content: input });
+        updateData() {
+            this.$emit('input', this.retVal);
         }
     }
 }

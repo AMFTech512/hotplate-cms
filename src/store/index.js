@@ -9,7 +9,9 @@ export default new Vuex.Store({
   state: {
     pageTitle: 'HotplateCMS',
     user: null,
-    listenerRegistered: false
+    listenerRegistered: false,
+    isWebmaster: false,
+    canSave: false
   },
   mutations: {
     setPageTitle(state, payload) {
@@ -24,6 +26,12 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    setAuthorized(state, authorized) {
+      state.isWebmaster = authorized;
+    },
+    setCanSave(state, canSave) {
+      state.canSave = canSave;
     }
   },
   actions: {
