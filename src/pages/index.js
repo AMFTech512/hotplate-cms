@@ -3,19 +3,9 @@ export const SpecialPages = [
         name: 'Home',
         dbPath: '/home',
         components: {
-            GreetingText: {
-                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/user/Text.vue'),
-                props: {
-                    headerTxt: 'Greeting Text',
-                    defaultTxt: 'Making Math and Science Easy.'
-                }
-            },
-            SmallerGreetingText: {
-                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/user/Text.vue'),
-                props: {
-                    headerTxt: 'Subheader Message'
-                }
-            } 
+            Greeting: {
+                vueComp: () => import(/* webpackChunkName: "Greeting" */ '@/components/user/Greeting.vue')
+            }
         }
     },
     {
