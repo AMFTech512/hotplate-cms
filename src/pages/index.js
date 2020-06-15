@@ -54,7 +54,10 @@ export const RegularPages = [
                     headerTxt: 'Body'
                 }
             }
-        }        
+        },
+        listItem: {
+            title: 'Description'
+        }   
     },
     {
         name: 'Challenges',

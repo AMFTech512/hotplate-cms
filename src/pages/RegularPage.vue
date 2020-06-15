@@ -1,5 +1,5 @@
 <template>
-  <div class="sp-page">
+  <div class="reg-page">
     <div v-if="loading" class="loading">    
       <v-progress-circular
         :size="70"
@@ -8,7 +8,7 @@
         indeterminate
       ></v-progress-circular>
     </div>
-    <div v-else>
+    <div class="card-container" v-else>
       <h1>Meta</h1>
       <component 
         v-for="(component, name) in Page.metaComponents" 
@@ -79,10 +79,14 @@ export default {
 
 <style lang="scss">
 
-.sp-page {
+.reg-page {
   .loading {
     text-align: center;
     padding: 50px;
+  }
+
+  .card-container {
+    padding: 10px;
   }
 }
 
