@@ -6,6 +6,8 @@ import RegularPageIndex from '../pages/RegularPageIndex.vue'
 import LoginComp from '@/pages/Login.vue'
 import UnauthorizedComp from '@/pages/Unauthorized.vue'
 import store from '@/store/index.js'
+import dashboard from '../pages/dashboard.vue'
+import UserPage from '../pages/users.vue'
 
 import auth from '@/firebase/auth'
 
@@ -26,6 +28,16 @@ const routes = [
     path: '/reg/:index',
     name: 'RegularPageIndex',
     component: RegularPageIndex
+  },
+  {
+    path: '/',
+    name: 'Dashboard',
+    component: dashboard
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: UserPage
   },
   {
     path: '/login',
