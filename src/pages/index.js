@@ -56,7 +56,7 @@ export const RegularPages = [
             }
         },
         listItem: {
-            title: 'Description'
+            title: 'Title/content'
         }   
     },
     {

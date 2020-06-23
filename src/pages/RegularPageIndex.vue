@@ -21,6 +21,7 @@
 <script>
 import database from '@/firebase/firestore.js'
 import { RegularPages } from '@/pages/index.js'
+import { getProp } from '@/lib/nested-obj.js'
 
 export default {
   name: 'RegularPage',
@@ -46,7 +47,7 @@ export default {
       if(!this.Page.listItem)
         return doc.id;
 
-      return doc.data()[this.Page.listItem.title] || doc.id;
+      return getProp(doc.data(), this.Page.listItem.title) || doc.id;
     }
   },
   async created() {
