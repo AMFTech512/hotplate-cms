@@ -89,6 +89,9 @@ export const RegularPages = [
                     headerTxt: 'Flag'
                 }
             },
+        },
+        listItem: {
+            title: 'Title/content'
         }
     }
 ];

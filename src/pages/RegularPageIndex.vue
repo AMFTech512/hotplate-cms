@@ -15,6 +15,9 @@
         </v-card-title>
       </v-card>
     </div>
+    <div class="add-btn-div">
+      <v-btn fab color="primary" @click="addPage"><v-icon dark>mdi-plus</v-icon></v-btn>
+    </div>
   </div>
 </template>
 
@@ -48,6 +51,9 @@ export default {
         return doc.id;
 
       return getProp(doc.data(), this.Page.listItem.title) || doc.id;
+    },
+    addPage() {
+      this.$router.push(`${this.$route.path}/$new`);
     }
   },
   async created() {
@@ -66,6 +72,11 @@ export default {
   .loading {
     text-align: center;
     padding: 50px;
+  }
+
+  .add-btn-div {
+    text-align: center;
+    margin: 10px;
   }
 
   .card {

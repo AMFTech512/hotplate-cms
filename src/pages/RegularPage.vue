@@ -60,6 +60,11 @@ export default {
     }
   },
   async created() {
+    if(this.$route.params.id == '$new'){
+      let path = ((this.Page.dbPath[0] == '/')? '' : '/') + this.Page.dbPath;
+      let newDoc = await database.collection(path).add({});
+      this.$router.push(`/reg/${this.$route.params.index}/${newDoc.id}`)
+    }
     this.$store.commit('setCanSave', true);
     this.PageData = (await this.docRef.get()).data() || {};
     this.MetaData = (await this.metaRef.get()).data() || {};

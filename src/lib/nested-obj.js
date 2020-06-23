@@ -21,6 +21,9 @@ export function pathToArr(path) {
 
 export function getProp(obj, path) {
 
+    if(!obj)
+        return undefined;
+
     if(typeof(path) == 'string')
         path = pathToArr(path);
 
