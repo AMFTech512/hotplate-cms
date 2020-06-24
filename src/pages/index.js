@@ -52,14 +52,44 @@ export const SpecialPages = [
         name: 'Rules',
         dbPath: '/rules',
         components: {
-            
+            Rules: {
+                vueComp: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                props: {
+                    headerTxt: 'Rules'
+                }
+            },
+            HowToPlay: {
+                vueComp: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                props: {
+                    headerTxt: 'How to Play'
+                }
+            },
         }
     },
     {
         name: 'Resources',
         dbPath: '/resources',
         components: {
-            
+            Left: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                    headerTxt: 'Left Cards',
+                    props: {
+                        headerTxt: 'Card'
+                    }
+                }
+            },
+            Right: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                    headerTxt: 'Right Cards',
+                    props: {
+                        headerTxt: 'Card'
+                    }
+                }
+            }
         }
     },
 ];

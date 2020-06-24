@@ -39,7 +39,8 @@ export default {
             type: Object,
             default: function() { 
                 return { 
-                    content: this.props.defaultTxt                }
+                    content: this.props.defaultTxt || ''
+                }
             }
         }
     },
