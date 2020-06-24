@@ -53,6 +53,12 @@ export const RegularPages = [
                 props: {
                     headerTxt: 'Body'
                 }
+            },
+            BodyTest: {
+                vueComp: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                props: {
+                    headerTxt: 'Body'
+                }
             }
         },
         listItem: {
