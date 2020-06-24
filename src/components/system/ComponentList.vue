@@ -69,6 +69,7 @@ export default {
                 return;
             this.retVal.components.splice(index, 1);
             this.indicies.splice(index, 1);
+            if (this.indicies.length < 1) this.indicies.push(0);
             this.updateData();
         }
     }

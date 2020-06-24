@@ -64,7 +64,8 @@ export default {
             default: function() {
                 return {
                     headerTxt: 'Header, Image, Text',
-                    defaultTxt: ''
+                    defaultTxt: '',
+                    imgPath: '/media'
                 };
             }
         },
@@ -72,8 +73,8 @@ export default {
             type: Object,
             default: function() { 
                 return { 
-                    text: this.props.defaultTxt,
-                    header: this.props.headerTxt
+                    text: this.props.defaultTxt || '',
+                    header: this.props.headerTxt || 'Header, Image, Text'
                 }
             }
         }
@@ -86,7 +87,7 @@ export default {
 
             let thisRef = this;
 
-            let imgRef = storage.ref(`${this.props.imgPath}/${this.imageFile.name}`);
+            let imgRef = storage.ref(`${this.props.imgPath || '/media'}/${this.imageFile.name}`);
             var uploadTask = imgRef.put(this.imageFile);
             uploadTask.on('state_changed', snapshot => {
                 thisRef.uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;

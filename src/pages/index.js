@@ -3,14 +3,49 @@ export const SpecialPages = [
         name: 'Home',
         dbPath: '/home',
         components: {
-            
+            CompetitionInfo: {
+                vueComp: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                props: {
+                    headerTxt: 'Competition Information'
+                }
+            },
+            Cards: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                    headerTxt: 'Cards',
+                    props: {
+                        headerTxt: ''
+                    }
+                }
+            }
         }
     },
     {
         name: 'About',
         dbPath: '/about',
         components: {
-            
+            DevTeam: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "HeaderImgTxt" */ '@/components/system/HeaderImgTxt.vue'),
+                    headerTxt: 'Developers',
+                    props: {
+                        headerTxt: 'Developer',
+                        imgPath: '/about/dev-imgs'
+                    }
+                }
+            },
+            AboutCards: {
+                vueComp: () => import(/* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'),
+                props: {
+                    compType: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
+                    headerTxt: 'About Cards',
+                    props: {
+                        headerTxt: 'Card'
+                    }
+                }
+            }
         }
     },
     {
