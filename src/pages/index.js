@@ -49,12 +49,6 @@ export const RegularPages = [
         },
         bodyComponents: {
             Body: {
-                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/system/Text.vue'),
-                props: {
-                    headerTxt: 'Body'
-                }
-            },
-            BodyTest: {
                 vueComp: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
                 props: {
                     headerTxt: 'Body'

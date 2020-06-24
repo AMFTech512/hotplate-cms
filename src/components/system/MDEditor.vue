@@ -1,19 +1,24 @@
 <template>
-  <div class="header-img-txt-comp">
+  <div class="md-editor-comp">
     <v-card class="card">
         <v-card-title>
-            <h2>{{ retVal.header }}</h2>
+            <h2>{{ props.headerTxt }}</h2>
         </v-card-title>
         <v-card-text>
-            <markdown-editor></markdown-editor>
+            <VueSimplemde v-model="retVal.content" />
         </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
+import VueSimplemde from 'vue-simplemde'
+
 export default {
     name: 'MarkdownEditorComponent',
+    components: {
+        VueSimplemde
+    },
     data() {
         return {
             retVal: this.value
@@ -34,9 +39,7 @@ export default {
             type: Object,
             default: function() { 
                 return { 
-                    text: this.props.defaultTxt,
-                    header: this.props.headerTxt
-                }
+                    content: this.props.defaultTxt                }
             }
         }
     },
@@ -51,8 +54,10 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~simplemde/dist/simplemde.min.css';
 
-.header-img-txt-comp {
+.md-editor-comp {
+
     
     margin: 10px;
 
