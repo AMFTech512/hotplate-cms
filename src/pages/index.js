@@ -15,7 +15,7 @@ export const SpecialPages = [
                     compType: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
                     headerTxt: 'Cards',
                     props: {
-                        headerTxt: ''
+                        headerTxt: 'Card'
                     }
                 }
             }
