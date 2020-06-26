@@ -6,7 +6,7 @@
       v-model="drawer"
       app
     >
-      <v-list dense>
+      <v-list dense nav>
         <v-list-item-group color="primary">
           <v-subheader>Console</v-subheader>
           <v-list-item to="/">
@@ -23,7 +23,7 @@
           <v-subheader v-if="SpecialPages.length > 0">
             Special Pages
           </v-subheader>
-          <v-list-item link v-for="(page, index) in SpecialPages" :key="page.name" @click="navigate(`/spec/${index}`, page.name)">
+          <v-list-item v-for="(page, index) in SpecialPages" :key="page.name" :to="`/spec/${index}`">
             <v-list-item-content>
               <v-list-item-title>{{ page.name }}</v-list-item-title>
             </v-list-item-content>
@@ -34,7 +34,7 @@
           <v-subheader v-if="RegularPages.length > 0">
             Regular Pages
           </v-subheader>
-          <v-list-item link v-for="(page, index) in RegularPages" :key="page.name" @click="navigate(`/reg/${index}`, page.name)">
+          <v-list-item v-for="(page, index) in RegularPages" :key="page.name" :to="`/reg/${index}`">
             <v-list-item-content>
               <v-list-item-title>{{ page.name }}</v-list-item-title>
             </v-list-item-content>
@@ -64,9 +64,15 @@
               item
             >
               <v-img
+                v-if="user.photoURL"
                 :src="user.photoURL"
                 alt="User Avatar"
-              ></v-img></v-avatar>
+              />
+              <v-img
+                v-else
+                src="@/assets/profile.png"
+                alt="User Avatar"
+              /></v-avatar>
           </v-btn>
         </template>
         <v-list>
@@ -111,9 +117,6 @@ export default {
     this.$store.commit('enableAuthListener');
   },
   methods: {
-    navigate(path, pageTitle) {
-      this.$router.push(path);
-    },
     save() {
       let thisRef = this;
       this.$refs.currentPage.save(() => {
@@ -121,7 +124,7 @@ export default {
       });
     },
     logout() {
-      auth.signOut().then(result => this.$router.push('/login') );
+      auth.signOut().then(() => this.$router.push('/login') );
     }
   },
   computed: {
