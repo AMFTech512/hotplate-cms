@@ -6,7 +6,7 @@
   <div class="calendar-comp">
     <v-card>
       <v-card-title>
-        <h2>Troop 471 Master Events Calendar</h2>
+        <h2>Calendar Component</h2>
       </v-card-title>
       <v-card-text align="center">
         <v-row>
