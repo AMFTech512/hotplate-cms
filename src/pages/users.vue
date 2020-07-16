@@ -61,7 +61,7 @@ import auth from "@/firebase/auth.js";
 import firestore from "@/firebase/firestore.js";
 import functions from "@/firebase/functions.js";
 export default {
-  name: 'UsersPage',
+  name: "UsersPage",
   data() {
     return {
       headers: [
@@ -115,15 +115,17 @@ export default {
   },
   methods: {
     async subscribeUserUpdates() {
-
       let thisRef = this;
 
       const users = firestore.collection("users");
       (await users.get()).forEach(userDoc => {
+        console.log("User: ", userDoc.id);
 
-        console.log('User: ', userDoc.id);
-
-        thisRef.users[userDoc.id] = { ...(userDoc.data()), id: userDoc.id };
+        thisRef.users[userDoc.id] = {
+          ...userDoc.data(),
+          id: userDoc.id,
+          isSelectable: auth.currentUser.uid !== userDoc.id
+        };
 
         console.log(Object.keys(thisRef.users).map(key => thisRef.users[key]));
 
@@ -141,7 +143,6 @@ export default {
           thisRef.updateIndex++;
         });
       });
-
     },
     deleteUser() {
       if (this.inputSelected) {

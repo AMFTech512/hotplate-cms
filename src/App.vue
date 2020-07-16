@@ -8,21 +8,32 @@
     >
       <v-list dense>
         <v-list-item-group color="primary">
-          <v-subheader>Console</v-subheader>
+          <v-subheader>Global</v-subheader>
+
           <v-list-item to="/">
             <v-list-item-content>
               <v-list-item-title>Dashboard</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
           <v-list-item to="/users">
             <v-list-item-content>
               <v-list-item-title>User Management</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item to="/taxonomies">
+            <v-list-item-content>
+              <v-list-item-title>Taxonomies</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-divider />
+
           <v-subheader v-if="SpecialPages.length > 0">
             Special Pages
           </v-subheader>
+
           <v-list-item link v-for="(page, index) in SpecialPages" :key="page.name" @click="navigate(`/spec/${index}`, page.name)">
             <v-list-item-content>
               <v-list-item-title>{{ page.name }}</v-list-item-title>
@@ -34,6 +45,7 @@
           <v-subheader v-if="RegularPages.length > 0">
             Regular Pages
           </v-subheader>
+
           <v-list-item link v-for="(page, index) in RegularPages" :key="page.name" @click="navigate(`/reg/${index}`, page.name)">
             <v-list-item-content>
               <v-list-item-title>{{ page.name }}</v-list-item-title>
