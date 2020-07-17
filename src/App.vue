@@ -7,7 +7,7 @@
       app
     >
       <v-list dense nav>
-        <v-list-item-group color="primary">
+        <v-list-item-group color="secondary">
           <v-subheader>Global</v-subheader>
 
           <v-list-item to="/">
@@ -25,6 +25,12 @@
           <v-list-item to="/taxonomies">
             <v-list-item-content>
               <v-list-item-title>Taxonomies</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item to="/theme">
+            <v-list-item-content>
+              <v-list-item-title>Theme</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -54,11 +60,11 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app color="indigo darken-2" dark>
+    <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon v-if="showNav" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="showSave" @click="save" color="blue" class="ma-2">
+      <v-btn v-if="showSave" @click="save" color="secondary" class="ma-2">
         Save
       </v-btn>
       <v-menu v-if="user" offset-y>

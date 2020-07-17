@@ -84,6 +84,7 @@ export default {
         }
     },
     async created() {
+        this.$store.commit('setPageTitle', 'Taxonomies');
         this.$store.commit('setCanSave', true);
 
         let taxObj = (await database.doc('/hotplate-cms/taxonomies').get()).data();

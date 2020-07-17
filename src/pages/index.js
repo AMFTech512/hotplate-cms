@@ -18,6 +18,9 @@ export const SpecialPages = [
                         headerTxt: 'Card'
                     }
                 }
+            },
+            Calendar: {
+                vueComp: () => import(/* webpackChunkName: "Calendar" */ '@/components/user/Calendar.vue'), 
             }
         }
     },

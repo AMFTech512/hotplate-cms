@@ -225,6 +225,7 @@
 <script>
 import firestore from '@/firebase/firestore.js';
 export default {
+  name: 'ThemePage',
   data() {
     return {
       themes: {
@@ -242,8 +243,17 @@ export default {
       .get()
       .then(doc => {
         let data = doc.data();
-        this.themes.light = data.light;
-        this.themes.dark = data.dark;
+
+        if(!data) {
+          this.setDefault('light');          
+          this.setDefault('dark');          
+        } else {
+          this.themes.light = data.light;
+          this.themes.dark = data.dark;
+        }
+        // console.log(this.$vuetify.theme.themes.dark)
+        this.$vuetify.theme.themes.light = this.themes.light;
+        this.$vuetify.theme.themes.dark = this.themes.dark;
       });
     this.loading = false;
   },

@@ -37,6 +37,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "Taxonomies" */ '@/pages/Taxonomies.vue')
   },
   {
+    path: '/theme',
+    name: 'Theme',
+    component: () => import(/* webpackChunkName: "Theme" */ '@/pages/theme.vue')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "Login" */ '@/pages/Login.vue')
