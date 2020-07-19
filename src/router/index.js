@@ -1,14 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import SpecialPage from '../pages/SpecialPage.vue'
-import RegularPage from '../pages/RegularPage.vue'
-import RegularPageIndex from '../pages/RegularPageIndex.vue'
-import LoginComp from '@/pages/Login.vue'
-import UnauthorizedComp from '@/pages/Unauthorized.vue'
 import store from '@/store/index.js'
-import dashboard from '../pages/dashboard.vue'
-import UserPage from '../pages/users.vue'
-
 import auth from '@/firebase/auth'
 
 Vue.use(VueRouter)
@@ -17,37 +9,42 @@ const routes = [
   {
     path: '/spec/:index',
     name: 'SpecialPage',
-    component: SpecialPage
+    component: () => import(/* webpackChunkName: "SpecialPage" */ '@/pages/SpecialPage.vue')
   },
   {
     path: '/reg/:index/:id',
     name: 'RegularPage',
-    component: RegularPage
+    component: () => import(/* webpackChunkName: "RegularPage" */ '@/pages/RegularPage.vue')
   },
   {
     path: '/reg/:index',
     name: 'RegularPageIndex',
-    component: RegularPageIndex
+    component: () => import(/* webpackChunkName: "RegularPageIndex" */ '@/pages/RegularPageIndex.vue')
   },
   {
     path: '/',
     name: 'Dashboard',
-    component: dashboard
+    component: () => import(/* webpackChunkName: "Dashboard" */ '@/pages/dashboard.vue')
   },
   {
     path: '/users',
     name: 'Users',
-    component: UserPage
+    component: () => import(/* webpackChunkName: "Users" */ '@/pages/users.vue')
+  },
+  {
+    path: '/taxonomies',
+    name: 'Taxonomies',
+    component: () => import(/* webpackChunkName: "Taxonomies" */ '@/pages/Taxonomies.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: LoginComp
+    component: () => import(/* webpackChunkName: "Login" */ '@/pages/Login.vue')
   },
   {
     path: '/unauthorized',
     name: 'Unauthorized',
-    component: UnauthorizedComp
+    component: () => import(/* webpackChunkName: "Unauthorized" */ '@/pages/Unauthorized.vue')
   }
   // {
   //   path: '/about',
@@ -55,7 +52,7 @@ const routes = [
   //   // route level code-splitting
   //   // this generates a separate chunk (about.[hash].js) for this route
   //   // which is lazy-loaded when the route is visited.
-  //   // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  //   // component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue')
   // }
 ]
 

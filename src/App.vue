@@ -8,18 +8,28 @@
     >
       <v-list dense nav>
         <v-list-item-group color="primary">
-          <v-subheader>Console</v-subheader>
+          <v-subheader>Global</v-subheader>
+
           <v-list-item to="/">
             <v-list-item-content>
               <v-list-item-title>Dashboard</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
           <v-list-item to="/users">
             <v-list-item-content>
               <v-list-item-title>User Management</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item to="/taxonomies">
+            <v-list-item-content>
+              <v-list-item-title>Taxonomies</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-divider />
+
           <v-subheader v-if="SpecialPages.length > 0">
             Special Pages
           </v-subheader>
