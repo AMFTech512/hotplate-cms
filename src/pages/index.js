@@ -21,6 +21,9 @@ export const SpecialPages = [
             },
             Calendar: {
                 vueComp: () => import(/* webpackChunkName: "Calendar" */ '@/components/user/Calendar.vue'), 
+            },
+            Carousel: {
+                vueComp: () => import(/* webpackChunkName: "HeaderImg" */ '@/components/user/HeaderImg.vue'), 
             }
         }
     },
