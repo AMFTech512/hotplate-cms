@@ -10,8 +10,11 @@
     </div>
     <div class="card-container" v-else>
       <v-card class="card" v-for="page in Pages" :key="page.id">
-        <v-card-title>
+        <v-card-title class="title">
           <router-link :to="`/reg/${$route.params.index}/${page.id}`">{{ getTitle(page) }}</router-link>
+          <v-btn class="align-right" @click="delPage(page.id, getTitle(page))" icon>
+            <v-icon color="grey lighten-1">mdi-delete</v-icon>
+          </v-btn>
         </v-card-title>
       </v-card>
     </div>
@@ -54,6 +57,18 @@ export default {
     },
     addPage() {
       this.$router.push(`${this.$route.path}/$new`);
+    },
+    async delPage(id, name) {
+
+      if(confirm(`Are you sure you want to delete ${name}?`)) {
+        try {
+          await this.collectionRef.doc(id).delete();
+          this.Pages = this.Pages.filter(page => page.id != id);
+        } catch(e) {
+          console.error(e);
+          alert('Oops! An error has occurred.');
+        }
+      }
     }
   },
   async created() {
@@ -69,6 +84,7 @@ export default {
 <style lang="scss">
 
 .reg-index-page {
+
   .loading {
     text-align: center;
     padding: 50px;
@@ -82,11 +98,16 @@ export default {
   .card {
     // min-width: 400px;
     margin: 10px auto;
+
+    > .title {
+      justify-content: space-between;
+    }
   }
 
   .card-container {
     padding: 10px;
   }
+
 }
 
 </style>

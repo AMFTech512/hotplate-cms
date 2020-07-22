@@ -134,8 +134,22 @@ export const RegularPages = [
                     headerTxt: 'Title'
                 }
             },
+            Category: {
+                vueComp: () => import(/* webpackChunkName: "Select" */ '@/components/system/Select.vue'),
+                props: {
+                    headerTxt: 'Category',
+                    options: [
+                        { text: 'Binary Exploitation', value: 'bin-exp'},
+                        { text: 'Cryptography', value: 'crypto'},
+                        { text: 'Forensics', value: 'forensics'},
+                        { text: 'General Skills', value: 'gen-skills'},
+                        { text: 'Reverse Engineering', value: 'rev-eng'},
+                        { text: 'Web Exploitation', value: 'web-exp'},
+                    ]
+                }
+            },
             Description: {
-                vueComp: () => import(/* webpackChunkName: "Text" */ '@/components/system/Text.vue'),
+                vueComp: () => import(/* webpackChunkName: "MDEditor" */ '@/components/system/MDEditor.vue'),
                 props: {
                     headerTxt: 'Description'
                 }
@@ -145,7 +159,7 @@ export const RegularPages = [
                 props: {
                     headerTxt: 'Hint'
                 }
-            },
+            }            
         },
         bodyComponents: {
             Flag: {
