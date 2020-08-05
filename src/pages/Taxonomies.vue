@@ -15,36 +15,11 @@
             </v-card-subtitle>
             <v-card-text>
                 <v-list>
-                    <v-list-item
-                        v-for="(tax, index) in taxonomies"
-                        :key="tax.id"
-                        class="border" 
-                    >
-                        <v-list-item-avatar>
-                            <v-btn @click="toggleEdit(index)" icon>
-                                <v-icon color="grey lighten-1">
-                                    {{ (tax.editing)? 'mdi-check' : 'mdi-pencil' }}
-                                </v-icon>
-                            </v-btn>
-                        </v-list-item-avatar>
-
-                        <v-list-item-content>
-                        <v-list-item-title v-if="!tax.editing">{{ tax.plural }}</v-list-item-title>
-                        <v-list-item-title v-else>
-                            <v-text-field label="Singular" v-model="tax.singular"></v-text-field>
-                            <v-text-field label="Plural" v-model="tax.plural"></v-text-field>
-                            <v-text-field label="Slug" v-model="tax.slug"></v-text-field>
-                        </v-list-item-title>
-                        </v-list-item-content>
-
-                        <v-list-item-action>
-                            
-                            <v-btn @click="delTax(index)" icon>
-                                <v-icon color="grey lighten-1">mdi-delete</v-icon>
-                            </v-btn>
-                        
-                        </v-list-item-action>
-                    </v-list-item>
+                    <TaxonomyComp
+                        v-for="(tax, index) in taxonomies" 
+                        :key="tax.id" 
+                        v-model="taxonomies[index]"
+                        @delete="delTax(index)" />
                     <br />
                 </v-list>
                 <v-btn
@@ -66,21 +41,17 @@
 
 <script>
 import database from '@/firebase/firestore.js'
+import TaxonomyComp from '@/components/ui/Tax.vue'
 
 export default {
     name: 'TaxonomiesPage',
+    components: {
+        TaxonomyComp
+    },
     data() {
         return {
             isLoading: true,
-            taxonomies: [
-                {
-                    singular: 'Tag',
-                    plural: 'Tags',
-                    slug: 'tag',
-                    id: Date.now(),
-                    editing: false
-                }
-            ]
+            taxonomies: []
         }
     },
     async created() {
@@ -88,21 +59,18 @@ export default {
 
         let taxObj = (await database.doc('/hotplate-cms/taxonomies').get()).data();
         this.taxonomies = Object.values(taxObj);
+        this.taxonomies.sort((a, b) => a.id - b.id);
         this.isLoading = false;
     },
     methods: {
         newTax() {
-            this.taxonomies.forEach(tax => tax.editing = false);
-            this.taxonomies.push({
+            const newtax = this.taxonomies.push({
                 id: Date.now(),
-                editing: true
+                values: []
             });
         },
         delTax(index) {
             this.taxonomies.splice(index, 1);
-        },
-        toggleEdit(index) {
-            this.taxonomies[index].editing = !this.taxonomies[index].editing;
         },
         save(callback, err = e => { alert(`An error occurred: ${e}`) }) {
             let taxObj = {};
@@ -135,7 +103,7 @@ export default {
         border: 1px solid lightgray;
         border-radius: 5px;
         padding: 10px;
-        margin: 5px;
+        margin: 5px 0;
     }
 }
 
