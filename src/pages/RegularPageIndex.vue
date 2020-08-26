@@ -91,6 +91,7 @@ export default {
 
 <style lang="scss">
 .reg-index-page {
+
   .loading {
     text-align: center;
     padding: 50px;
@@ -113,5 +114,6 @@ export default {
   .card-container {
     padding: 10px;
   }
+
 }
 </style>
