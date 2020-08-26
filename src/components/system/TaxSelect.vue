@@ -2,14 +2,13 @@
   <div class="text-comp">
     <v-card class="card">
       <v-card-title>
-        <h2>{{ props.headerTxt }}</h2>
+        <h2 v-if="isLoading">Loading taxonomy...</h2>
+        <h2 v-else>{{ headerTxt }}</h2>
       </v-card-title>
-      <v-card-text>
+      <v-card-text v-if="!isLoading">
         <v-select
           v-model="retVal.content"
-          :items="props.options"
-          item-text="text"
-          item-value="value"
+          :items="options"
           filled
           label="Select"
         ></v-select>
@@ -19,16 +18,17 @@
 </template>
 
 <script>
+import firestore from '@/firebase/firestore'
+
 export default {
-  name: 'SelectComponent',
+  name: 'TaxSelectComponent',
   props: {
     name: String,
     props: {
       type: Object,
       default() {
         return {
-          headerTxt: 'Select',
-          options: {}
+          tax: ''
         };
       }
     },
@@ -43,10 +43,18 @@ export default {
   },
   data() {
     return {
-      retVal: this.value
+      retVal: this.value,
+      options: [],
+      headerTxt: '',
+      isLoading: true,
+      taxonomy: null
     };
   },
-  created() {
+  async created() {
+    this.taxonomy = (await firestore.doc('/hotplate-cms/taxonomies').get()).data()[this.props.tax];
+    this.options = this.taxonomy.values;
+    this.headerTxt = this.taxonomy.singular;
+    this.isLoading = false;
     this.updateData();
   },
   methods: {
