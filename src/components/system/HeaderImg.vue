@@ -13,7 +13,7 @@
         <v-item-group v-model="imgDel" multiple>
           <v-row>
             <v-col
-              v-for="(img, index) in imgPath"
+              v-for="(img, index) in retVal.imgPath"
               :key="index"
               cols="12"
               sm="6"
@@ -48,7 +48,7 @@
           prepend-icon=""
           label="Image Uploads"
           multiple
-          :disabled="!(props.max === 0 || imgPath.length < props.max)"
+          :disabled="!(props.max === 0 || retVal.imgPath.length < props.max)"
           filled
         />
         <v-progress-linear
@@ -108,7 +108,6 @@ export default {
   data() {
     return {
       retVal: this.value,
-      imgPath: this.value.imgPath,
       imageFile: null,
       imgDel: [],
       uploadProgress: 0
@@ -120,7 +119,7 @@ export default {
         this.imageFile &&
         (this.uploadProgress === 0 || this.uploadProgress === 100) &&
         this.$refs.fileInput.validate() &&
-        (this.props.max === 0 || this.imgPath.length < this.props.max) &&
+        (this.props.max === 0 || this.retValimgPath.length < this.props.max) &&
         this.imageFile.length > 0
       );
     },
@@ -157,7 +156,7 @@ export default {
 
         uploadTask.then((snapshot) => {
           snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.imgPath.push(downloadURL);
+            this.retVal.imgPath.push(downloadURL);
           });
         });
       });
@@ -170,11 +169,11 @@ export default {
           )
         ) {
           this.imgDel.forEach((img) => {
-            const selected = this.imgPath[img];
+            const selected = this.retVal.imgPath[img];
             const imgRef = storage.refFromURL(selected);
             imgRef.delete().then(() => {
-              const index = this.imgPath.indexOf(img);
-              this.imgPath.splice(index, 1);
+              const index = this.retVal.imgPath.indexOf(img);
+              this.retVal.imgPath.splice(index, 1);
               const indexd = this.imgDel.indexOf(img);
               this.imgDel.splice(indexd, 1);
             });
