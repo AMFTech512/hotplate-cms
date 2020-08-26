@@ -5,11 +5,11 @@
   <div class="header-img-txt-comp">
     <v-card>
       <v-card-title>
-        <h2>{{ retVal.header }}</h2>
+        <h2>{{ retVal.header || props.headerTxt }}</h2>
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="retVal.header" label="Header" />
-        <h3>Images</h3>
+        <v-text-field v-model="retVal.header" filled label="Header" />
+        <h3>Images - Click to Select</h3>
         <v-item-group v-model="imgDel" multiple>
           <v-row>
             <v-col
@@ -21,22 +21,21 @@
               lg="3"
             >
               <v-item v-slot:default="{ active, toggle }">
-                <v-img
-                  :src="img"
-                  alt="Image"
-                  class="text-right pa-2"
-                  style="max-width: 300px; max-height: 200px;"
-                  eager
-                  @click="toggle"
-                >
-                  <v-btn icon dark>
-                    <v-icon class="error--text">{{
-                      active
-                        ? 'mdi-checkbox-marked'
-                        : 'mdi-checkbox-blank-outline'
-                    }}</v-icon>
-                  </v-btn>
-                </v-img>
+                <div>
+                  <img
+                    v-if="!active"
+                    :src="img"
+                    alt="Image"
+                    class="text-right pa-2"
+                    style="max-width: 100%; max-height: 200px; cursor: pointer;"
+                    @click="toggle"
+                  />
+                  <v-card v-else color="error" height="200" @click="toggle">
+                    <v-icon style="width: 100%; height: 100%; font-size: 5rem;"
+                      >mdi-delete</v-icon
+                    >
+                  </v-card>
+                </div>
               </v-item>
             </v-col>
           </v-row>
@@ -45,9 +44,12 @@
           ref="fileInput"
           v-model="imageFile"
           accept="image/png, image/jpeg, image/bmp, .svg"
-          prepend-icon="mdi-image"
+          prepend-inner-icon="mdi-image"
+          prepend-icon=""
           label="Image Uploads"
           multiple
+          :disabled="!(props.max === 0 || imgPath.length < props.max)"
+          filled
         />
         <v-progress-linear
           :active="uploadProgress != 0"
@@ -60,15 +62,15 @@
         />
         <v-spacer />
         <v-btn
-          color="blue"
-          class="white--text"
+          color="secondary"
+          :class="$vuetify.theme.dark ? 'black--text' : 'white--text'"
           :disabled="!canUpload"
           @click="uploadFile"
           >Upload</v-btn
         >
         <v-btn
           color="red"
-          class="white--text ml-5"
+          class="black--text ml-5"
           :disabled="!canDelete"
           @click="rmImgs"
           >Delete Selected Images</v-btn
@@ -84,21 +86,18 @@ import storage from '@/firebase/storage.js';
 export default {
   name: 'HeaderImgComponent',
   props: {
-    name: {
-      type: String,
-      default: 'HeaderImage'
-    },
     props: {
       type: Object,
-      default: function() {
+      default() {
         return {
-          headerTxt: 'Header, Image'
+          headerTxt: 'Header, Image',
+          max: 0
         };
       }
     },
     value: {
       type: Object,
-      default: function() {
+      default() {
         return {
           header: this.props.headerTxt,
           imgPath: []
@@ -119,8 +118,10 @@ export default {
     canUpload() {
       return (
         this.imageFile &&
-        (this.uploadProgress == 0 || this.uploadProgress == 100) &&
-        this.$refs.fileInput.validate()
+        (this.uploadProgress === 0 || this.uploadProgress === 100) &&
+        this.$refs.fileInput.validate() &&
+        (this.props.max === 0 || this.imgPath.length < this.props.max) &&
+        this.imageFile.length > 0
       );
     },
     canDelete() {
@@ -132,50 +133,50 @@ export default {
     }
   },
   created() {
+    if (!this.retVal.imgPath) {
+      this.retVal.imgPath = [];
+    }
     this.$emit('input', this.retVal);
   },
   methods: {
     uploadFile() {
-      let thisRef = this;
-      this.imageFile.forEach(img => {
-        let imgRef = storage.ref(`${thisRef.props.imgPath}/${img.name}`);
-        var uploadTask = imgRef.put(img);
+      this.imageFile.forEach((img) => {
+        const imgRef = storage.ref(`${this.props.imgPath}/${img.name}`);
+        const uploadTask = imgRef.put(img);
         uploadTask.on(
           'state_changed',
-          snapshot => {
-            thisRef.uploadProgress =
+          (snapshot) => {
+            this.uploadProgress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           },
-          err => {
-            console.log(err);
+          (err) => {
             alert(`An error occurred: ${JSON.stringify(err)}`);
-            thisRef.uploadProgress = 0;
+            this.uploadProgress = 0;
           }
         );
 
-        uploadTask.then(snapshot => {
-          snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            thisRef.imgPath.push(downloadURL);
+        uploadTask.then((snapshot) => {
+          snapshot.ref.getDownloadURL().then((downloadURL) => {
+            this.imgPath.push(downloadURL);
           });
         });
       });
     },
     rmImgs() {
       if (this.canDelete) {
-        const thisRef = this;
         if (
           confirm(
             'You are about to delete the selected images.  Do you wish to proceed?'
           )
         ) {
-          this.imgDel.forEach(img => {
-            let selected = thisRef.imgPath[img];
-            let imgRef = storage.refFromURL(selected);
+          this.imgDel.forEach((img) => {
+            const selected = this.imgPath[img];
+            const imgRef = storage.refFromURL(selected);
             imgRef.delete().then(() => {
-              const index = thisRef.imgPath.indexOf(img);
-              thisRef.imgPath.splice(index, 1);
-              const indexd = thisRef.imgDel.indexOf(img);
-              thisRef.imgDel.splice(indexd, 1);
+              const index = this.imgPath.indexOf(img);
+              this.imgPath.splice(index, 1);
+              const indexd = this.imgDel.indexOf(img);
+              this.imgDel.splice(indexd, 1);
             });
           });
         }
