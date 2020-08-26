@@ -3,25 +3,25 @@
     <v-card>
       <v-card-title>Login</v-card-title>
       <v-card-text align="center">
-        <v-form @submit.prevent="signin" ref="form">
+        <v-form ref="form" @submit.prevent="signin">
           <v-text-field
-          outlined
-          label="Email Address"
-          type="email"
-          dense
-          hide-details="auto"
-          :rules="[rules.required, rules.email]"
-          v-model="email"
+            v-model="email"
+            outlined
+            label="Email Address"
+            type="email"
+            dense
+            hide-details="auto"
+            :rules="[rules.required, rules.email]"
           />
           <v-spacer />
           <v-text-field
-          outlined
-          label="Password"
-          type="password"
-          dense
-          hide-details="auto"
-          :rules="[rules.required, rules.min]"
-          v-model="password"
+            v-model="password"
+            outlined
+            label="Password"
+            type="password"
+            dense
+            hide-details="auto"
+            :rules="[rules.required, rules.min]"
           />
           <v-spacer />
           <v-btn type="submit">Sign In</v-btn>
@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import auth from '@/firebase/auth.js'
-import firebase from '@/firebase/index.js'
+import auth from '@/firebase/auth.js';
+import firebase from '@/firebase/index.js';
 
 export default {
   data() {
@@ -47,39 +47,40 @@ export default {
       email: '',
       password: '',
       rules: {
-        required: value => !!value || 'Required.',
-        min: value => (value && value.length >= 8) || 'Min 8 characters',
-        email: value => /.+@.+/.test(value) || 'E-mail must be valid'
+        required: (value) => !!value || 'Required.',
+        min: (value) => (value && value.length >= 8) || 'Min 8 characters',
+        email: (value) => /.+@.+/.test(value) || 'E-mail must be valid'
       }
-    }
+    };
   },
   created() {
-      this.$store.commit('setPageTitle', 'Login');
+    this.$store.commit('setPageTitle', 'Login');
   },
   methods: {
-    signin() {
-      const isValid = this.$refs.form.validate();
-      if (isValid === true) {
-        const thisRef = this;
-        auth.signInWithEmailAndPassword(this.email, this.password).then(() => {
-          thisRef.$router.push('/');
-        }).catch((error) => {
-          alert(error);
-        })
-      } else {
-        return false;
+    async signin() {
+      try {
+        const isValid = this.$refs.form.validate();
+        if (isValid === true) {
+          await auth.signInWithEmailAndPassword(this.email, this.password);
+          this.$router.push('/');
+        } else {
+          return false;
+        }
+      } catch (error) {
+        alert(error);
       }
     },
-    signinG() {
-      let thisRef = this;
-      var provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).then( result => {
-        // thisRef.$store.commit('setUser', result.user);
-        thisRef.$router.push('/');
-      }).catch( error => console.log(error) );
+    async signinG() {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await auth.signInWithPopup(provider);
+        this.$router.push('/');
+      } catch (error) {
+        alert(error);
+      }
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

@@ -22,7 +22,10 @@
 export default {
   name: 'SelectComponent',
   props: {
-    name: String,
+    name: {
+      type: String,
+      default: ''
+    },
     props: {
       type: Object,
       default() {

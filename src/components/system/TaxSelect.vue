@@ -18,12 +18,15 @@
 </template>
 
 <script>
-import firestore from '@/firebase/firestore'
+import firestore from '@/firebase/firestore';
 
 export default {
   name: 'TaxSelectComponent',
   props: {
-    name: String,
+    name: {
+      type: String,
+      default: ''
+    },
     props: {
       type: Object,
       default() {
@@ -51,7 +54,9 @@ export default {
     };
   },
   async created() {
-    this.taxonomy = (await firestore.doc('/hotplate-cms/taxonomies').get()).data()[this.props.tax];
+    this.taxonomy = (
+      await firestore.doc('/hotplate-cms/taxonomies').get()
+    ).data()[this.props.tax];
     this.options = this.taxonomy.values;
     this.headerTxt = this.taxonomy.singular;
     this.isLoading = false;

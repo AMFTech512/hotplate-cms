@@ -57,38 +57,38 @@
 </template>
 
 <script>
-import auth from "@/firebase/auth.js";
-import firestore from "@/firebase/firestore.js";
-import functions from "@/firebase/functions.js";
+import auth from '@/firebase/auth.js';
+import firestore from '@/firebase/firestore.js';
+import functions from '@/firebase/functions.js';
 export default {
-  name: "UsersPage",
+  name: 'UsersPage',
   data() {
     return {
       headers: [
         {
-          text: "Email Address",
-          value: "email"
+          text: 'Email Address',
+          value: 'email'
         },
         {
-          text: "Username",
-          value: "username"
+          text: 'Username',
+          value: 'username'
         },
         {
-          text: "Score",
-          value: "score"
+          text: 'Score',
+          value: 'score'
         },
         {
-          text: "Permissions",
-          value: "permissions"
+          text: 'Permissions',
+          value: 'permissions'
         },
         {
-          text: "Disabled",
-          value: "disabled"
+          text: 'Disabled',
+          value: 'disabled'
         }
       ],
       users: {},
       input: [],
-      role: "",
+      role: '',
       disabled: false,
       updateIndex: 0
     };
@@ -105,126 +105,112 @@ export default {
       // small hack to force this to update when there is updated user info
       this.updateIndex;
 
-      return Object.keys(this.users).map(key => this.users[key]);
+      return Object.keys(this.users).map((key) => this.users[key]);
     }
   },
   created() {
-    this.$store.commit("setPageTitle", "User Management");
+    this.$store.commit('setPageTitle', 'User Management');
 
     this.subscribeUserUpdates();
   },
   methods: {
     async subscribeUserUpdates() {
-      let thisRef = this;
-
-      const users = firestore.collection("users");
-      (await users.get()).forEach(userDoc => {
-        console.log("User: ", userDoc.id);
-
-        thisRef.users[userDoc.id] = {
+      const users = firestore.collection('users');
+      (await users.get()).forEach((userDoc) => {
+        this.users[userDoc.id] = {
           ...userDoc.data(),
           id: userDoc.id,
           isSelectable: auth.currentUser.uid !== userDoc.id
         };
 
-        console.log(Object.keys(thisRef.users).map(key => thisRef.users[key]));
-
         const userp = firestore.doc(`${userDoc.ref.path}/private/private`);
-        userp.onSnapshot(doc => {
-          let priv = doc.data();
-          thisRef.users[userDoc.id] = { ...thisRef.users[userDoc.id], ...priv };
-          thisRef.updateIndex++;
+        userp.onSnapshot((doc) => {
+          const priv = doc.data();
+          this.users[userDoc.id] = { ...this.users[userDoc.id], ...priv };
+          this.updateIndex++;
         });
 
         const user = firestore.doc(`${userDoc.ref.path}`);
-        user.onSnapshot(doc => {
-          let data = doc.data();
-          thisRef.users[userDoc.id] = { ...thisRef.users[userDoc.id], ...data };
-          thisRef.updateIndex++;
+        user.onSnapshot((doc) => {
+          const data = doc.data();
+          this.users[userDoc.id] = { ...this.users[userDoc.id], ...data };
+          this.updateIndex++;
         });
       });
     },
-    deleteUser() {
-      if (this.inputSelected) {
-        if (auth.currentUser.uid !== this.input[0].id) {
-          if (
-            confirm(
-              "CONFIRM: You are about to delete a user.  Do you wish to proceed?"
-            )
-          ) {
-            const remove = functions.httpsCallable("removeUser");
-            remove({ uid: this.input[0].id }).then(result => {
-              console.log(result);
-            });
-          }
-        } else {
-          alert(
-            "Please delete your own account from your profile page in the main application."
-          );
+    async deleteUser() {
+      if (!this.inputSelected) {
+        alert('Please select a user.');
+      }
+      if (auth.currentUser.uid === this.input[0].id) {
+        alert(
+          'Please delete your own account from your profile page in the main application.'
+        );
+      }
+      if (
+        confirm(
+          'CONFIRM: You are about to delete a user.  Do you wish to proceed?'
+        )
+      ) {
+        try {
+          const remove = functions.httpsCallable('removeUser');
+          await remove({ uid: this.input[0].id });
+        } catch (error) {
+          alert(error);
         }
-      } else {
-        alert("Please select a user.");
       }
     },
     async toggleDisabled() {
-      const user = this.input[0];
-      const toggle = functions.httpsCallable("disableUser");
-      toggle({ uid: user.id, disable: this.disabled })
-        .then(result => {
-          console.log(result);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      try {
+        const user = this.input[0];
+        const toggle = functions.httpsCallable('disableUser');
+        await toggle({ uid: user.id, disable: this.disabled });
+      } catch (error) {
+        alert(error);
+      }
     },
     async setPermissions() {
-      const user = this.input[0];
-      if (user !== undefined) {
-        let isAdmin = false;
-        await firestore
-          .doc(`webmasters/${user.id}`)
-          .get()
-          .then(doc => {
-            if (doc.exists) {
-              isAdmin = true;
-            } else {
-              isAdmin = false;
-            }
-          });
-        if (auth.currentUser.uid !== this.input[0].id) {
-          if (this.role === "User") {
-            if (isAdmin) {
-              const removeAdmin = functions.httpsCallable("removeAdmin");
-              removeAdmin({ uid: user.id }).then(result => {
-                console.log(result);
-              });
-            } else {
-              alert("User is already a basic user.");
-            }
-          } else if (this.role === "Admin") {
-            firestore
-              .doc(`webmasters/${user.id}`)
-              .set({ name: user.username })
-              .then(() => {
-                console.log("Added user to admin database.");
-                const addAdmin = functions.httpsCallable("addAdmin");
-                addAdmin({ uid: user.id }).then(result => {
-                  console.log(result);
-                });
-              })
-              .catch(error => {
-                alert(error);
-              });
-          } else {
-            alert(
-              'Invalid user permissions.  Please select "User" or "Admin" to set permissions.'
-            );
-          }
-        } else {
-          alert("You cannot set permissions on your own account.");
+      try {
+        const user = this.input[0];
+
+        if (!user) {
+          alert('Please select a user.');
+          return;
         }
-      } else {
-        alert("Please select a user.");
+
+        let isAdmin = false;
+        const doc = await firestore.doc(`webmasters/${user.id}`).get();
+        if (doc.exists) {
+          isAdmin = true;
+        } else {
+          isAdmin = false;
+        }
+
+        if (auth.currentUser.uid === this.input[0].id) {
+          alert('You cannot set permissions on your own account.');
+          return;
+        }
+
+        if (this.role === 'User') {
+          if (isAdmin) {
+            const removeAdmin = functions.httpsCallable('removeAdmin');
+            await removeAdmin({ uid: user.id });
+          } else {
+            alert('User is already a basic user.');
+          }
+        } else if (this.role === 'Admin') {
+          await firestore
+            .doc(`webmasters/${user.id}`)
+            .set({ name: user.username });
+          const addAdmin = functions.httpsCallable('addAdmin');
+          await addAdmin({ uid: user.id });
+        } else {
+          alert(
+            'Invalid user permissions.  Please select "User" or "Admin" to set permissions.'
+          );
+        }
+      } catch (error) {
+        alert(error);
       }
     }
   }

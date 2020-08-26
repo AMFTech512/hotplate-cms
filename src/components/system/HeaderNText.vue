@@ -1,70 +1,66 @@
 <template>
   <div class="header-txt-comp">
     <v-card class="card">
-        <v-card-title>
-            <h2>{{ retVal.header }}</h2>
-        </v-card-title>
-        <v-card-text>
-            <v-text-field label="Header" v-model="retVal.header"></v-text-field>
-            <v-textarea
-                filled
-                label="Text"
-                v-model="retVal.text"
-            ></v-textarea>
-        </v-card-text>
+      <v-card-title>
+        <h2>{{ retVal.header }}</h2>
+      </v-card-title>
+      <v-card-text>
+        <v-text-field v-model="retVal.header" label="Header"></v-text-field>
+        <v-textarea v-model="retVal.text" filled label="Text"></v-textarea>
+      </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'HeaderNTextComponent',
-    data() {
-        return {
-            retVal: this.value
-        }
+  name: 'HeaderNTextComponent',
+  props: {
+    name: {
+      type: String,
+      default: ''
     },
     props: {
-        name: String,
-        props: {
-            type: Object,
-            default: function() {
-                return {
-                    headerTxt: 'Header \'N Text',
-                    defaultTxt: ''
-                };
-            }
-        },
-        value: {
-            type: Object,
-            default: function() { 
-                return { 
-                    text: this.props.defaultTxt,
-                    header: this.props.headerTxt
-                }
-            }
-        }
+      type: Object,
+      default() {
+        return {
+          headerTxt: "Header 'N Text",
+          defaultTxt: ''
+        };
+      }
     },
-    created() {
-        this.$emit('input', this.retVal);
+    value: {
+      type: Object,
+      default() {
+        return {
+          text: this.props.defaultTxt,
+          header: this.props.headerTxt
+        };
+      }
     }
-}
+  },
+  data() {
+    return {
+      retVal: this.value
+    };
+  },
+  created() {
+    this.$emit('input', this.retVal);
+  }
+};
 </script>
 
 <style lang="scss">
-
 .header-txt-comp {
-    
-    margin: 10px;
+  margin: 10px;
 
-    .card {
-        // min-width: 400px;
-        margin: 0 auto;
-    }
+  .card {
+    // min-width: 400px;
+    margin: 0 auto;
+  }
 
-    h1 {
-        line-height: 2.5rem;
-    }
+  h1 {
+    line-height: 2.5rem;
+  }
 }
-
 </style>
