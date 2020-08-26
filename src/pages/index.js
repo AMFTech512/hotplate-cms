@@ -210,6 +210,23 @@ export const SpecialPages = [
           props: {
             headerTxt: 'Hint'
           }
+        },
+        Files: {
+          vueComp: () =>
+            import(
+              /* webpackChunkName: "ComponentList" */ '@/components/system/ComponentList.vue'
+            ),
+          props: {
+            compType: () =>
+              import(
+                /* webpackChunkName: "MDEditor" */ '@/components/system/FileUpload.vue'
+              ),
+            headerTxt: 'Attachments',
+            props: {
+              headerTxt: 'File Upload',
+              filePath: '/challenge-files'
+            }
+          }
         }
       },
       bodyComponents: {
