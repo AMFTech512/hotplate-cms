@@ -1,6 +1,6 @@
 <template>
   <div class="reg-page">
-    <div v-if="loading" class="loading">    
+    <div v-if="loading" class="loading">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -8,31 +8,33 @@
         indeterminate
       ></v-progress-circular>
     </div>
-    <div class="card-container" v-else>
+    <div v-else class="card-container">
       <h1>Meta</h1>
-      <component 
-        v-for="(component, name) in Page.metaComponents" 
-        :key="name"
+      <component
         :is="component.vueComp"
+        v-for="(component, name) in Page.metaComponents"
+        :key="name"
+        v-model="MetaData[name]"
         :name="name"
         :props="component.props"
-        v-model="MetaData[name]" />
+      />
 
       <h1>Content</h1>
-      <component 
-        v-for="(component, name) in Page.bodyComponents" 
-        :key="name"
+      <component
         :is="component.vueComp"
+        v-for="(component, name) in Page.bodyComponents"
+        :key="name"
+        v-model="PageData[name]"
         :name="name"
         :props="component.props"
-        v-model="PageData[name]" />
+      />
     </div>
   </div>
 </template>
 
 <script>
-import database from '@/firebase/firestore.js'
-import { RegularPages } from '@/pages/index.js'
+import database from '@/firebase/firestore.js';
+import { RegularPages } from '@/pages/index.js';
 
 export default {
   name: 'RegularPage',
@@ -42,28 +44,32 @@ export default {
       MetaData: {},
       PageData: {},
       loading: true
-    }
+    };
   },
   computed: {
     Page() {
       return RegularPages[this.$route.params.index];
     },
     metaRef() {
-      let path = ((this.Page.dbPath[0] == '/')? '' : '/') + this.Page.dbPath + '/' + this.$route.params.id;
-      let docRef = database.doc(path);
+      const path = `${
+        (this.Page.dbPath[0] === '/' ? '' : '/') + this.Page.dbPath
+      }/${this.$route.params.id}`;
+      const docRef = database.doc(path);
       return docRef;
     },
     docRef() {
-      let path = `${((this.Page.dbPath[0] == '/')? '' : '/')}${this.Page.dbPath}/${this.$route.params.id}/deep/content`;
-      let docRef = database.doc(path);
+      const path = `${this.Page.dbPath[0] === '/' ? '' : '/'}${
+        this.Page.dbPath
+      }/${this.$route.params.id}/deep/content`;
+      const docRef = database.doc(path);
       return docRef;
     }
   },
   async created() {
-    if(this.$route.params.id == '$new'){
-      let path = ((this.Page.dbPath[0] == '/')? '' : '/') + this.Page.dbPath;
-      let newDoc = await database.collection(path).add({});
-      this.$router.push(`/reg/${this.$route.params.index}/${newDoc.id}`)
+    if (this.$route.params.id === '$new') {
+      const path = (this.Page.dbPath[0] === '/' ? '' : '/') + this.Page.dbPath;
+      const newDoc = await database.collection(path).add({});
+      this.$router.push(`/reg/${this.$route.params.index}/${newDoc.id}`);
     }
     this.$store.commit('setCanSave', true);
     this.PageData = (await this.docRef.get()).data() || {};
@@ -74,16 +80,20 @@ export default {
     this.$store.commit('setPageTitle', this.Page.name);
   },
   methods: {
-    save(callback, err = e => { alert(`An error occurred: ${e}`) }) {
+    save(
+      callback,
+      err = (e) => {
+        alert(`An error occurred: ${e}`);
+      }
+    ) {
       this.docRef.set(this.PageData).then(callback).catch(err);
       this.metaRef.set(this.MetaData).then(callback).catch(err);
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
-
 .reg-page {
   .loading {
     text-align: center;
@@ -94,5 +104,4 @@ export default {
     padding: 10px;
   }
 }
-
 </style>
