@@ -7,7 +7,7 @@
       <v-card-text>
         <div
           v-for="(component, index) in retVal.components"
-          :key="index"
+          :key="indices[index]"
           class="comp-div"
         >
           <component
@@ -21,7 +21,7 @@
         </div>
         <div class="add-btn-div">
           <v-btn fab color="primary" @click="addComp"
-            ><v-icon dark>mdi-plus</v-icon></v-btn
+            ><v-icon>mdi-plus</v-icon></v-btn
           >
         </div>
       </v-card-text>
@@ -52,7 +52,17 @@ export default {
   },
   data() {
     return {
-      retVal: this.value
+      retVal: this.value,
+      indices: ((thisRef) => {
+        const nIndices = [];
+        for (const i in thisRef.value.components) {
+          nIndices.push(i);
+        }
+        if (nIndices.length === 0) {
+          return [0];
+        }
+        return nIndices;
+      })(this)
     };
   },
   created() {
@@ -64,6 +74,7 @@ export default {
     },
     addComp() {
       this.retVal.components.push(undefined);
+      this.indices.push(this.indices[this.indices.length - 1] + 1);
       this.updateData();
     },
     delComp(index) {
@@ -71,6 +82,10 @@ export default {
         return;
       }
       this.retVal.components.splice(index, 1);
+      this.indices.splice(index, 1);
+      if (this.indices.length < 1) {
+        this.indices.push(0);
+      }
       this.updateData();
     }
   }
