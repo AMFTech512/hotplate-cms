@@ -24,23 +24,18 @@
             :rules="[rules.required, rules.min]"
           />
           <v-spacer />
-          <v-btn type="submit">Sign In</v-btn>
+          <v-btn color="secondary" class="sectext--text" type="submit"
+            >Sign In</v-btn
+          >
         </v-form>
-        <v-spacer />
-        <h3>OR</h3>
-        <v-spacer />
-        <v-btn dark color="red" @click="signinG">
-          <v-icon left>mdi-google</v-icon>Sign in with Google
-        </v-btn>
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
-import auth from '@/firebase/auth.js';
-import firebase from '@/firebase/index.js';
-
+import auth from '@/firebase/auth';
+import functions from '@/firebase/functions';
 export default {
   data() {
     return {
@@ -60,21 +55,12 @@ export default {
     async signin() {
       try {
         const isValid = this.$refs.form.validate();
-        if (isValid === true) {
+        if (isValid) {
           await auth.signInWithEmailAndPassword(this.email, this.password);
           this.$router.push('/');
         } else {
-          return false;
+          return;
         }
-      } catch (error) {
-        alert(error);
-      }
-    },
-    async signinG() {
-      try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        await auth.signInWithPopup(provider);
-        this.$router.push('/');
       } catch (error) {
         alert(error);
       }

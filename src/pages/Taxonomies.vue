@@ -25,12 +25,11 @@
         </v-list>
         <v-btn
           absolute
-          dark
           fab
           bottom
-          middle
           left
-          color="blue"
+          color="secondary"
+          class="sectext--text"
           @click="newTax()"
         >
           <v-icon>mdi-plus</v-icon>

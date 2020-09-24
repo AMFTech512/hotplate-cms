@@ -4,20 +4,18 @@
 
 <script>
 export default {
-    name: 'CMSHeader',
+  name: 'CMSHeader',
+  props: {
     props: {
-        props: {
-            type: Object,
-            default: function() {
-                return {
-                    headerTxt: 'Header'
-                }
-            }
+      type: Object,
+      default() {
+        return {
+            headerTxt: 'Header'
         }
+      }
     }
+  }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

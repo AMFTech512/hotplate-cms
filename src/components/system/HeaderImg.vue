@@ -63,7 +63,7 @@
         <v-spacer />
         <v-btn
           color="secondary"
-          :class="$vuetify.theme.dark ? 'black--text' : 'white--text'"
+          class="sectext--text"
           :disabled="!canUpload"
           @click="uploadFile"
           >Upload</v-btn

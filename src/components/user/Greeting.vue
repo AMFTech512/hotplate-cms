@@ -6,13 +6,17 @@
       </v-card-title>
       <v-card-text>
         <h3>Big Text</h3>
-        <v-text-field v-model="retVal.big1" label="Line 1"> </v-text-field>
-        <v-text-field v-model="retVal.big2" label="Line 2"> </v-text-field>
+        <v-text-field v-model="retVal.big1" filled label="Line 1">
+        </v-text-field>
+        <v-text-field v-model="retVal.big2" filled label="Line 2">
+        </v-text-field>
         <br />
 
         <h3>Smaller Text</h3>
-        <v-text-field v-model="retVal.small1" label="Line 1"> </v-text-field>
-        <v-text-field v-model="retVal.small2" label="Line 2"> </v-text-field>
+        <v-text-field v-model="retVal.small1" filled label="Line 1">
+        </v-text-field>
+        <v-text-field v-model="retVal.small2" filled label="Line 2">
+        </v-text-field>
         <br />
 
         <h3>Background Image</h3>
@@ -20,14 +24,16 @@
           v-if="imgPath"
           :src="imgPath"
           alt="Image"
-          style="max-width: 300px; max-height: 200px;"
+          style="max-width: 300px; max-height: 200px"
         />
         <v-file-input
           ref="fileInput"
           v-model="imageFile"
           :rules="rules"
+          filled
           accept="image/png, image/jpeg, image/bmp"
-          prepend-icon="mdi-image"
+          prepend-inner-icon="mdi-image"
+          prepend-icon=""
           label="Image Upload"
         ></v-file-input>
         <v-progress-linear
@@ -37,10 +43,10 @@
           height="4"
           rounded
           :value="uploadProgress"
-          color="light-blue"
+          color="secondary"
         ></v-progress-linear>
         <br />
-        <v-btn color="primary" :disabled="!canUpload" @click="uploadFile"
+        <v-btn color="secondary" :disabled="!canUpload" @click="uploadFile"
           >Upload</v-btn
         >
       </v-card-text>
@@ -140,7 +146,7 @@ export default {
 
 <style lang="scss">
 .greet-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

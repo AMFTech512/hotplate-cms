@@ -2,7 +2,7 @@
   <v-list-item class="border">
     <v-list-item-avatar>
       <v-btn icon @click="toggleEdit(tax.id)">
-        <v-icon color="grey lighten-1">
+        <v-icon>
           {{ editing ? 'mdi-check' : 'mdi-pencil' }}
         </v-icon>
       </v-btn>
@@ -39,13 +39,13 @@
           @keypress.enter="addVal"
         ></v-text-field>
 
-        <v-chip-group column active-class="primary--text">
+        <v-chip-group column active-class="secondary--text">
           <v-chip
             v-for="(val, index) in values"
             :key="index"
             close
-            color="blue"
-            text-color="white"
+            color="secondary"
+            text-color="sectext"
             @click:close="delVal(index)"
           >
             {{ val }}
@@ -56,7 +56,7 @@
 
     <v-list-item-action>
       <v-btn icon @click="$emit('delete', tax.id)">
-        <v-icon color="grey lighten-1">mdi-delete</v-icon>
+        <v-icon>mdi-delete</v-icon>
       </v-btn>
     </v-list-item-action>
   </v-list-item>

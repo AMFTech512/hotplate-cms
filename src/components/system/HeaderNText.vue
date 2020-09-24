@@ -5,7 +5,11 @@
         <h2>{{ retVal.header }}</h2>
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="retVal.header" label="Header"></v-text-field>
+        <v-text-field
+          v-model="retVal.header"
+          filled
+          label="Header"
+        ></v-text-field>
         <v-textarea v-model="retVal.text" filled label="Text"></v-textarea>
       </v-card-text>
     </v-card>
@@ -52,7 +56,7 @@ export default {
 
 <style lang="scss">
 .header-txt-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

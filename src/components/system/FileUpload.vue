@@ -8,7 +8,7 @@
         <div v-if="filePath">
           <h4>
             File Name:
-            <span style="font-weight: normal;">{{ retVal.name }}</span>
+            <span style="font-weight: normal">{{ retVal.name }}</span>
           </h4>
           <h4>
             URL: <a target="new" :href="filePath">{{ filePath }}</a>
@@ -18,8 +18,10 @@
         <v-file-input
           ref="fileInput"
           v-model="file"
-          prepend-icon="mdi-file"
+          prepend-inner-icon="mdi-file"
+          prepend-icon=""
           label="Image Upload"
+          filled
         ></v-file-input>
         <v-progress-linear
           :active="uploadProgress != 0"
@@ -28,10 +30,14 @@
           height="4"
           rounded
           :value="uploadProgress"
-          color="light-blue"
+          color="secondary"
         ></v-progress-linear>
         <br />
-        <v-btn color="primary" :disabled="!canUpload" @click="uploadFile"
+        <v-btn
+          color="secondary"
+          class="sectext--text"
+          :disabled="!canUpload"
+          @click="uploadFile"
           >Upload</v-btn
         >
       </v-card-text>
@@ -138,8 +144,8 @@ export default {
 </script>
 
 <style lang="scss">
-.header-img-txt-comp {
-  margin: 10px;
+.file-upload-comp {
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

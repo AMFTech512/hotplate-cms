@@ -5,7 +5,11 @@
         <h2>{{ props.headerTxt }}</h2>
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="retVal.content" label="Text"></v-text-field>
+        <v-text-field
+          v-model="retVal.content"
+          filled
+          label="Text"
+        ></v-text-field>
       </v-card-text>
     </v-card>
   </div>
@@ -23,7 +27,8 @@ export default {
       type: Object,
       default() {
         return {
-          headerTxt: 'Text'
+          headerTxt: 'Text',
+          defaultTxt: ''
         };
       }
     },
@@ -31,7 +36,7 @@ export default {
       type: Object,
       default() {
         return {
-          content: ''
+          content: this.props.defaultTxt
         };
       }
     }
@@ -54,7 +59,7 @@ export default {
 
 <style lang="scss">
 .text-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

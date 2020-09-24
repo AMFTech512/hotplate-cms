@@ -1,5 +1,6 @@
 <template>
   <div class="reg-page">
+    <v-breadcrumbs :items="crumbs" />
     <div v-if="loading" class="loading">
       <v-progress-circular
         :size="70"
@@ -63,6 +64,25 @@ export default {
       }/${this.$route.params.id}/deep/content`;
       const docRef = database.doc(path);
       return docRef;
+    },
+    crumbs() {
+      const root = this.$route.params.index;
+      const rootPage = `/reg/${root}`;
+      const params = [
+        {
+          text: this.Page.name,
+          disabled: false,
+          to: rootPage,
+          exact: true
+        },
+        {
+          text: 'Regular Page',
+          disabled: false,
+          to: this.$route.fullPath,
+          exact: true
+        }
+      ];
+      return params;
     }
   },
   async created() {

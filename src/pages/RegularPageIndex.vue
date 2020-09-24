@@ -8,27 +8,44 @@
         indeterminate
       ></v-progress-circular>
     </div>
-    <div v-else class="card-container">
-      <v-card v-for="page in Pages" :key="page.id" class="card">
-        <v-card-title class="title">
-          <router-link :to="`/reg/${$route.params.index}/${page.id}`">{{
-            getTitle(page)
-          }}</router-link>
-          <v-btn
-            class="align-right"
-            icon
-            @click="delPage(page.id, getTitle(page))"
-          >
-            <v-icon color="grey lighten-1">mdi-delete</v-icon>
-          </v-btn>
-        </v-card-title>
-      </v-card>
-    </div>
-    <div class="add-btn-div">
-      <v-btn fab color="primary" @click="addPage"
-        ><v-icon dark>mdi-plus</v-icon></v-btn
-      >
-    </div>
+    <v-card
+      v-else
+      outlined
+      style="background-color: #121212"
+      class="card-container"
+    >
+      <v-card-title>
+        <h2>{{ Page.name }}</h2>
+      </v-card-title>
+      <v-card-text>
+        <v-card v-for="page in Pages" :key="page.id" class="card">
+          <v-card-title class="title">
+            <router-link :to="`/reg/${$route.params.index}/${page.id}`">{{
+              getTitle(page)
+            }}</router-link>
+            <v-btn
+              class="align-right"
+              icon
+              @click="delPage(page.id, getTitle(page))"
+            >
+              <v-icon color="grey lighten-1">mdi-delete</v-icon>
+            </v-btn>
+          </v-card-title>
+        </v-card>
+      </v-card-text>
+      <v-card-actions class="add-btn-div">
+        <v-btn
+          fab
+          absolute
+          bottom
+          left
+          color="secondary"
+          class="sectext--text"
+          @click="addPage"
+          ><v-icon dark>mdi-plus</v-icon></v-btn
+        >
+      </v-card-actions>
+    </v-card>
   </div>
 </template>
 
@@ -91,7 +108,6 @@ export default {
 
 <style lang="scss">
 .reg-index-page {
-
   .loading {
     text-align: center;
     padding: 50px;
@@ -112,8 +128,7 @@ export default {
   }
 
   .card-container {
-    padding: 10px;
+    margin: 40px 0;
   }
-
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="comp-list-comp">
-    <v-card class="card">
+    <v-card class="card" style="background-color: #121212" outlined>
       <v-card-title>
         <h2>{{ props.headerTxt }}</h2>
       </v-card-title>
@@ -16,15 +16,24 @@
             :props="props.props"
           />
           <div class="del-btn-div">
-            <v-btn color="error" @click="delComp(index)">Delete</v-btn>
+            <v-btn color="error" class="black--text" @click="delComp(index)"
+              >Delete</v-btn
+            >
           </div>
         </div>
-        <div class="add-btn-div">
-          <v-btn fab color="primary" @click="addComp"
-            ><v-icon>mdi-plus</v-icon></v-btn
-          >
-        </div>
       </v-card-text>
+      <v-card-actions>
+        <v-btn
+          fab
+          absolute
+          bottom
+          left
+          color="secondary"
+          class="sectext--text"
+          @click="addComp"
+          ><v-icon>mdi-plus</v-icon></v-btn
+        >
+      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -45,7 +54,7 @@ export default {
     },
     value: {
       type: Object,
-      default: () => {
+      default() {
         return { components: [] };
       }
     }
@@ -94,15 +103,10 @@ export default {
 
 <style lang="scss">
 .comp-list-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   > h2 {
     margin: 20px;
-  }
-
-  .add-btn-div {
-    text-align: center;
-    margin: 10px;
   }
 
   .del-btn-div {
@@ -111,7 +115,7 @@ export default {
 
   .comp-div {
     margin: 10px;
-    padding: 10px;
+    padding: 20px;
   }
 }
 </style>
