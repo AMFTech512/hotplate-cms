@@ -8,6 +8,7 @@
         <v-text-field
           v-model="retVal.author"
           label="Author"
+          filled
           @input="updateData()"
         ></v-text-field>
         <v-textarea v-model="retVal.quote" filled label="Quote"></v-textarea>
@@ -61,7 +62,7 @@ export default {
 
 <style lang="scss">
 .quote-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

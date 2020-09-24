@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-import auth from '@/firebase/auth.js'
+import auth from '@/firebase/auth.js';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -18,9 +18,8 @@ export default new Vuex.Store({
       state.pageTitle = payload;
     },
     enableAuthListener(state) {
-
-      if(!state.listenerRegistered) {
-        auth.onAuthStateChanged( user => state.user = user );
+      if (!state.listenerRegistered) {
+        auth.onAuthStateChanged((user) => (state.user = user));
         state.listenerRegistered = true;
       }
     },
@@ -34,8 +33,6 @@ export default new Vuex.Store({
       state.canSave = canSave;
     }
   },
-  actions: {
-  },
-  modules: {
-  }
-})
+  actions: {},
+  modules: {}
+});

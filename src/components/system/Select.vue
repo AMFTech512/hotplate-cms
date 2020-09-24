@@ -62,7 +62,7 @@ export default {
 
 <style lang="scss">
 .text-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

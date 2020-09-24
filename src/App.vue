@@ -2,7 +2,7 @@
   <v-app id="app">
     <v-navigation-drawer v-if="showNav" v-model="drawer" app>
       <v-list dense nav>
-        <v-list-item-group color="primary">
+        <v-list-item-group color="secondary">
           <v-subheader>Global</v-subheader>
 
           <v-list-item to="/">
@@ -56,14 +56,20 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app color="indigo darken-2" dark>
+    <v-app-bar app color="primary" class="pritext--text">
       <v-app-bar-nav-icon
         v-if="showNav"
+        color="pritext"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="showSave" color="blue" class="ma-2" @click="save">
+      <v-btn
+        v-if="showSave"
+        color="secondary"
+        class="ma-2 sectext--text"
+        @click="save"
+      >
         Save
       </v-btn>
       <v-menu v-if="user" offset-y>
@@ -86,14 +92,16 @@
       </v-menu>
     </v-app-bar>
     <v-main>
-      <router-view ref="currentPage" :key="$route.fullPath" />
+      <v-container>
+        <router-view ref="currentPage" :key="$route.fullPath" />
+      </v-container>
     </v-main>
 
     <v-snackbar v-model="hasSaved">
       The new content has been saved.
-      <v-btn color="pink" text @click="hasSaved = false">
-        Dismiss
-      </v-btn>
+      <template #action>
+        <v-btn color="pink" text @click="hasSaved = false">Dismiss</v-btn>
+      </template>
     </v-snackbar>
   </v-app>
 </template>
@@ -127,6 +135,26 @@ export default {
   },
   created() {
     this.$store.commit('enableAuthListener');
+  },
+  mounted() {
+    document.addEventListener('keydown', (event) => {
+      if (this.$store.state.canSave && event.ctrlKey && event.keyCode === 83) {
+        event.preventDefault();
+        this.save();
+      } else if (event.ctrlKey && event.keyCode === 83) {
+        event.preventDefault();
+      }
+    });
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', (event) => {
+      if (this.$store.state.canSave && event.ctrlKey && event.keyCode === 83) {
+        event.preventDefault();
+        this.save();
+      } else if (event.ctrlKey && event.keyCode === 83) {
+        event.preventDefault();
+      }
+    });
   },
   methods: {
     save() {

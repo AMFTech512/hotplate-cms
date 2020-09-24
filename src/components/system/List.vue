@@ -14,6 +14,7 @@
             <v-text-field
               v-model="retVal.items[index]"
               :label="`Item ${index + 1}`"
+              filled
             >
             </v-text-field>
           </v-col>
@@ -21,7 +22,11 @@
             <v-btn color="error" @click="delItem(index)">Delete</v-btn>
           </v-col>
         </v-row>
-        <v-btn color="primary" :disabled="reachedMax" @click="addItem"
+        <v-btn
+          color="secondary"
+          class="sectext-text"
+          :disabled="reachedMax"
+          @click="addItem"
           >Add</v-btn
         >
       </v-card-text>
@@ -89,7 +94,7 @@ export default {
 
 <style lang="scss">
 .list-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

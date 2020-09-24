@@ -5,21 +5,27 @@
         <h2>{{ retVal.header }}</h2>
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="retVal.header" label="Header"></v-text-field>
+        <v-text-field
+          v-model="retVal.header"
+          filled
+          label="Header"
+        ></v-text-field>
         <v-textarea v-model="retVal.text" filled label="Text"></v-textarea>
         <h3>Image</h3>
         <img
           v-if="imgPath"
           :src="imgPath"
           alt="Image"
-          style="max-width: 300px; max-height: 200px;"
+          style="max-width: 300px; max-height: 200px"
         />
         <v-file-input
           ref="fileInput"
           v-model="imageFile"
           :rules="rules"
           accept="image/png, image/jpeg, image/bmp, .svg"
-          prepend-icon="mdi-image"
+          prepend-inner-icon="mdi-image"
+          prepend-icon=""
+          filled
           label="Image Upload"
         ></v-file-input>
         <v-progress-linear
@@ -29,10 +35,14 @@
           height="4"
           rounded
           :value="uploadProgress"
-          color="light-blue"
+          color="secondary"
         ></v-progress-linear>
         <br />
-        <v-btn color="primary" :disabled="!canUpload" @click="uploadFile"
+        <v-btn
+          color="secondary"
+          class="sectext--text"
+          :disabled="!canUpload"
+          @click="uploadFile"
           >Upload</v-btn
         >
       </v-card-text>
@@ -130,7 +140,7 @@ export default {
 
 <style lang="scss">
 .header-img-txt-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

@@ -5,9 +5,21 @@
         <h2>{{ retVal.name }}</h2>
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="retVal.name" label="Full Name"></v-text-field>
-        <v-text-field v-model="retVal.email" label="Email"></v-text-field>
-        <v-text-field v-model="retVal.phone" label="Phone"></v-text-field>
+        <v-text-field
+          v-model="retVal.name"
+          filled
+          label="Full Name"
+        ></v-text-field>
+        <v-text-field
+          v-model="retVal.email"
+          filled
+          label="Email"
+        ></v-text-field>
+        <v-text-field
+          v-model="retVal.phone"
+          filled
+          label="Phone"
+        ></v-text-field>
       </v-card-text>
     </v-card>
   </div>
@@ -56,7 +68,7 @@ export default {
 
 <style lang="scss">
 .contact-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;

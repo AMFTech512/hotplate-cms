@@ -5,7 +5,8 @@
         <h2>{{ retVal.subject }}</h2>
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="retVal.subject" label="Subject"> </v-text-field>
+        <v-text-field v-model="retVal.subject" filled label="Subject">
+        </v-text-field>
         <br />
         <h3>Topics</h3>
         <v-row
@@ -17,6 +18,7 @@
             <v-text-field
               v-model="retVal.items[index]"
               :label="`Item ${index + 1}`"
+              filled
             >
             </v-text-field>
           </v-col>
@@ -25,7 +27,7 @@
           </v-col>
         </v-row>
         <br />
-        <v-btn color="primary" :disabled="reachedMax" @click="addItem"
+        <v-btn color="secondary" :disabled="reachedMax" @click="addItem"
           >Add</v-btn
         >
       </v-card-text>
@@ -94,7 +96,7 @@ export default {
 
 <style lang="scss">
 .sub-list-comp {
-  margin: 10px;
+  margin: 40px 0;
 
   .card {
     // min-width: 400px;
