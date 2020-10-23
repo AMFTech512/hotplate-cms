@@ -23,6 +23,12 @@
             </v-list-item-content>
           </v-list-item>
 
+          <v-list-item to="/theme">
+            <v-list-item-content>
+              <v-list-item-title>Theme</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-divider />
 
           <v-subheader v-if="SpecialPages.length > 0">
@@ -103,12 +109,23 @@
         <v-btn color="pink" text @click="hasSaved = false">Dismiss</v-btn>
       </template>
     </v-snackbar>
+
+    <v-footer class="mt-10">
+      <span class="mr-4 cardtext--text">&copy; 2020 Hotplate CMS</span>
+      <v-spacer />
+      <v-switch
+        v-model="$vuetify.theme.dark"
+        label="Dark Mode"
+        @click="setMode"
+      />
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import { RegularPages, SpecialPages } from '@/pages/index.js';
-import auth from '@/firebase/auth.js';
+import { RegularPages, SpecialPages } from '@/pages/index';
+import auth from '@/firebase/auth';
+import firestore from '@/firebase/firestore';
 
 export default {
   data() {
@@ -133,8 +150,23 @@ export default {
       return this.$store.state.isWebmaster;
     }
   },
-  created() {
+  async created() {
     this.$store.commit('enableAuthListener');
+    const theme = localStorage.getItem('darkMode');
+    if (theme) {
+      this.$vuetify.theme.dark = theme === 'true';
+    }
+    const storedThemes = await localStorage.getItem('hotplateTheme');
+    if (storedThemes) {
+      this.$vuetify.theme.themes.light = JSON.parse(storedThemes).light;
+      this.$vuetify.theme.themes.dark = JSON.parse(storedThemes).dark;
+    }
+    const doc = await firestore.doc('hotplate-cms/theme').get();
+    if (doc.exists) {
+      const data = doc.data();
+      this.$vuetify.theme.themes.light = data.light;
+      this.$vuetify.theme.themes.dark = data.dark;
+    }
   },
   mounted() {
     document.addEventListener('keydown', (event) => {
@@ -165,6 +197,9 @@ export default {
     },
     logout() {
       auth.signOut().then(() => this.$router.push('/login'));
+    },
+    setMode() {
+      localStorage.setItem('darkMode', this.$vuetify.theme.dark);
     }
   }
 };
