@@ -8,9 +8,19 @@
       </v-card-title>
       <v-card-text>
         <h3 class="mb-4">Heading</h3>
-        <v-text-field v-model="retVal.head" filled label="Heading" />
+        <v-text-field
+          v-model="retVal.head"
+          color="secondary"
+          filled
+          label="Heading"
+        />
         <h3 class="mb-4">Subheading</h3>
-        <v-text-field v-model="retVal.sub" filled label="Subheading" />
+        <v-text-field
+          v-model="retVal.sub"
+          color="secondary"
+          filled
+          label="Subheading"
+        />
         <h3 class="mb-4">Background Image</h3>
         <img
           v-if="imgPath"
@@ -27,9 +37,10 @@
           prepend-icon=""
           label="Image Upload"
           filled
+          color="secondary"
         />
         <v-progress-linear
-          :active="uploadProgress != 0"
+          :active="uploadProgress !== 0"
           background-opacity=".3"
           buffer-value="100"
           height="4"
@@ -37,7 +48,7 @@
           :value="uploadProgress"
           color="secondary"
         />
-        <v-spacer />
+        <v-spacer v-if="uploadProgress !== 0" />
         <v-btn
           color="secondary"
           class="sectext--text"
@@ -63,7 +74,7 @@
 </template>
 
 <script>
-import storage from '@/firebase/storage.js';
+import storage from '@/firebase/storage';
 
 export default {
   name: 'PageHeader',
@@ -82,7 +93,8 @@ export default {
         return {
           head: 'This is a page header.',
           sub: 'This is a page subheader.',
-          fullPage: false
+          fullPage: false,
+          imgPath: ''
         };
       }
     }
@@ -104,7 +116,7 @@ export default {
       );
     },
     canDelete() {
-      if (this.imgPath !== null && this.imgPath !== undefined) {
+      if (this.imgPath) {
         return true;
       } else {
         return false;
@@ -119,7 +131,7 @@ export default {
       this.$emit('input', this.retVal);
     },
     uploadFile() {
-      const imgRef = storage.ref(this.props.imgPath);
+      const imgRef = storage.ref(this.retVal.imgPath);
       const uploadTask = imgRef.put(this.imageFile);
       uploadTask.on(
         'state_changed',
@@ -127,26 +139,33 @@ export default {
           this.uploadProgress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
-        (err) => {
-          alert(`An error occurred: ${JSON.stringify(err)}`);
+        (error) => {
+          alert(`An error occurred: ${JSON.stringify(error)}`);
           this.uploadProgress = 0;
+        },
+        async () => {
+          try {
+            this.uploadProgress = 100;
+            const url = await uploadTask.snapshot.ref.getDownloadURL();
+            this.retVal.imgPath = url;
+            this.imgPath = url;
+          } catch (error) {
+            alert(error);
+          }
         }
       );
-      uploadTask.then((snapshot) => {
-        snapshot.ref.getDownloadURL().then((downloadURL) => {
-          this.retVal.imgPath = downloadURL;
-          this.imgPath = downloadURL;
-        });
-      });
     },
-    delImg() {
+    async delImg() {
       if (this.canDelete) {
         if (confirm('Are you sure you want to delete this image?')) {
-          const imgRef = storage.refFromURL(this.imgPath);
-          imgRef.delete().then(() => {
+          try {
+            const imgRef = storage.refFromURL(this.imgPath);
+            await imgRef.delete();
             this.retVal.imgPath = null;
             this.imgPath = null;
-          });
+          } catch (error) {
+            alert(error);
+          }
         }
       } else {
         alert('No image is uploaded.');

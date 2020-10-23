@@ -97,7 +97,6 @@ export default {
   margin: 40px 0;
 
   .card {
-    // min-width: 400px;
     margin: 0 auto;
   }
 

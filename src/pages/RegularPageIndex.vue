@@ -42,7 +42,7 @@
           color="secondary"
           class="sectext--text"
           @click="addPage"
-          ><v-icon dark>mdi-plus</v-icon></v-btn
+          ><v-icon>mdi-plus</v-icon></v-btn
         >
       </v-card-actions>
     </v-card>
