@@ -53,6 +53,12 @@ const routes = [
     name: 'Unauthorized',
     component: () =>
       import(/* webpackChunkName: "Unauthorized" */ '@/pages/Unauthorized.vue')
+  },
+  {
+    path: '/theme',
+    name: 'Theme',
+    component: () =>
+      import(/* webpackChunkName: "Theme" */ '@/pages/theme.vue')
   }
 ];
 

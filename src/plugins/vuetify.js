@@ -6,6 +6,7 @@ Vue.use(Vuetify);
 export default new Vuetify({
   theme: {
     dark: true,
+    // Remove the themes property if using the theme page.
     themes: {
       dark: {
         primary: '#2f90ff',
