@@ -24,7 +24,7 @@
           filled
         ></v-file-input>
         <v-progress-linear
-          :active="uploadProgress != 0"
+          :active="uploadProgress !== 0"
           background-opacity=".3"
           buffer-value="100"
           height="4"
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import storage from '@/firebase/storage.js';
+import storage from '@/firebase/storage';
 
 export default {
   name: 'FileUploadComponent',
@@ -95,7 +95,6 @@ export default {
   },
   methods: {
     async uploadFile() {
-      const thisRef = this;
       const fileRef = storage.ref(
         `${this.props.filePath || '/media'}/${this.file.name}`
       );
@@ -122,22 +121,25 @@ export default {
       uploadTask.on(
         'state_changed',
         (snapshot) => {
-          thisRef.uploadProgress =
+          this.uploadProgress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
         (err) => {
           console.log(err);
           alert(`An error occurred: ${JSON.stringify(err)}`);
-          thisRef.uploadProgress = 0;
+          this.uploadProgress = 0;
+        },
+        async () => {
+          try {
+            this.uploadProgress = 100;
+            const url = await uploadTask.snapshot.ref.getDownloadURL();
+            this.retVal.fileURL = url;
+            this.filePath = url;
+          } catch (error) {
+            alert(error);
+          }
         }
       );
-
-      uploadTask.then((snapshot) => {
-        snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          thisRef.retVal.fileURL = downloadURL;
-          thisRef.filePath = downloadURL;
-        });
-      });
     }
   }
 };
@@ -148,7 +150,6 @@ export default {
   margin: 40px 0;
 
   .card {
-    // min-width: 400px;
     margin: 0 auto;
   }
 

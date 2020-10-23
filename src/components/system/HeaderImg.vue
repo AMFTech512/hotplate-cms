@@ -52,7 +52,7 @@
           filled
         />
         <v-progress-linear
-          :active="uploadProgress != 0"
+          :active="uploadProgress !== 0"
           background-opacity=".3"
           buffer-value="100"
           height="4"
@@ -140,25 +140,28 @@ export default {
   methods: {
     uploadFile() {
       this.imageFile.forEach((img) => {
-        const imgRef = storage.ref(`${this.props.imgPath}/${img.name}`);
-        const uploadTask = imgRef.put(img);
+        const imgRef = storage.ref(this.retVal.imgPath);
+        const uploadTask = imgRef.put(this.imageFile);
         uploadTask.on(
           'state_changed',
           (snapshot) => {
             this.uploadProgress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           },
-          (err) => {
-            alert(`An error occurred: ${JSON.stringify(err)}`);
+          (error) => {
+            alert(`An error occurred: ${JSON.stringify(error)}`);
             this.uploadProgress = 0;
+          },
+          async () => {
+            try {
+              this.uploadProgress = 100;
+              const url = await uploadTask.snapshot.ref.getDownloadURL();
+              this.retVal.imgPath.push(url);
+            } catch (error) {
+              alert(error);
+            }
           }
         );
-
-        uploadTask.then((snapshot) => {
-          snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.retVal.imgPath.push(downloadURL);
-          });
-        });
       });
     },
     rmImgs() {
@@ -168,16 +171,15 @@ export default {
             'You are about to delete the selected images.  Do you wish to proceed?'
           )
         ) {
-          this.imgDel.forEach((img) => {
+          this.imgDel.forEach(async (img) => {
             const selected = this.retVal.imgPath[img];
             const imgRef = storage.refFromURL(selected);
-            imgRef.delete().then(() => {
-              const index = this.retVal.imgPath.indexOf(img);
-              this.retVal.imgPath.splice(index, 1);
-              const indexd = this.imgDel.indexOf(img);
-              this.imgDel.splice(indexd, 1);
-            });
-          });
+            await imgRef.delete();
+            const index = this.retVal.imgPath.indexOf(img);
+            this.retVal.imgPath.splice(index, 1);
+            const indexd = this.imgDel.indexOf(img);
+            this.imgDel.splice(indexd, 1);
+          })
         }
       } else {
         alert('Please select some images to delete.');

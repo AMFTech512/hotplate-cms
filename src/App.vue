@@ -63,7 +63,7 @@
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         v-if="showSave"
         color="secondary"
