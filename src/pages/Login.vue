@@ -28,6 +28,12 @@
             >Sign In</v-btn
           >
         </v-form>
+        <v-spacer />
+        <h3>OR</h3>
+        <v-spacer />
+        <v-btn dark color="red" @click="signinG">
+          <v-icon left>mdi-google</v-icon>Sign in with Google
+        </v-btn>
       </v-card-text>
     </v-card>
   </div>
@@ -36,6 +42,7 @@
 <script>
 import auth from '@/firebase/auth';
 import functions from '@/firebase/functions';
+import firebase from '@/firebase/index';
 export default {
   data() {
     return {
@@ -62,6 +69,15 @@ export default {
           return;
         }
       } catch (error) {
+        alert(error);
+      }
+    },
+    async signinG() {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await auth.signInWithPopup(provider);
+        this.$router.push('/');
+      } catch(error) {
         alert(error);
       }
     }
